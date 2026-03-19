@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRebuild — Admin Dashboard</title>
+    <style>
+        :root { --primary: #1a73e8; --accent: #00c853; --warn: #ff9800; --danger: #ef5350; --dark: #1a1a2e; --gray: #f5f7fa; --text: #333; --text-light: #666; --radius: 12px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text); background: var(--gray); }
+
+        /* LOGIN */
+        .login-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-overlay.hidden { display: none; }
+        .login-box {
+            background: #fff; padding: 2.5rem; border-radius: var(--radius);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 360px; text-align: center;
+        }
+        .login-box h2 { margin-bottom: 0.5rem; }
+        .login-box p { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .login-box input {
+            width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dde1e6;
+            border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+        }
+        .login-box button {
+            width: 100%; padding: 0.75rem; background: var(--primary); color: #fff;
+            border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
+        }
+        .login-error { color: var(--danger); font-size: 0.85rem; margin-bottom: 0.5rem; display: none; }
+
+        /* NAV */
+        nav {
+            background: var(--dark); color: #fff; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 56px;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.2rem; }
+        .nav-logo span { color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .nav-right button { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+
+        /* STATS */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 1.5rem 2rem; }
+        .stat-card {
+            background: #fff; border-radius: var(--radius); padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;
+        }
+        .stat-num { font-size: 2.5rem; font-weight: 800; }
+        .stat-num.new { color: var(--primary); }
+        .stat-num.progress { color: var(--warn); }
+        .stat-num.done { color: var(--accent); }
+        .stat-label { color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem; }
+
+        /* FILTERS */
+        .toolbar {
+            padding: 0 2rem; margin-bottom: 1rem;
+            display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
+        }
+        .filter-btn {
+            padding: 6px 16px; border-radius: 20px; border: 1.5px solid #dde1e6;
+            background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 500;
+            transition: all .2s;
+        }
+        .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .search-input {
+            padding: 6px 14px; border-radius: 20px; border: 1.5px solid #dde1e6;
+            font-size: 0.85rem; width: 250px;
+        }
+
+        /* TABLE */
+        .table-wrap { padding: 0 2rem 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        th { background: var(--dark); color: #fff; padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; white-space: nowrap; }
+        td { padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; vertical-align: top; }
+        tr:hover { background: #f8f9ff; }
+
+        .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 12px;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+        }
+        .badge-new { background: #e3f2fd; color: #1565c0; }
+        .badge-in_progress { background: #fff3e0; color: #e65100; }
+        .badge-done { background: #e8f5e9; color: #2e7d32; }
+        .badge-rejected { background: #fce4ec; color: #c62828; }
+
+        .frustration-bar {
+            display: inline-block; height: 8px; border-radius: 4px;
+            background: linear-gradient(90deg, #4caf50, #ff9800, #f44336);
+        }
+
+        /* DETAIL PANEL */
+        .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: none; }
+        .detail-overlay.show { display: flex; justify-content: flex-end; }
+        .detail-panel {
+            width: 520px; max-width: 90vw; background: #fff; height: 100%;
+            overflow-y: auto; padding: 2rem; box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+        }
+        .detail-panel h2 { margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+        .detail-panel .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        .detail-section { margin-bottom: 1.5rem; }
+        .detail-section h3 { font-size: 0.95rem; color: var(--primary); margin-bottom: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+        .detail-row { display: flex; margin-bottom: 0.4rem; }
+        .detail-label { width: 140px; font-weight: 600; font-size: 0.85rem; color: var(--text-light); flex-shrink: 0; }
+        .detail-value { font-size: 0.9rem; }
+        .status-select { padding: 6px 12px; border-radius: 6px; border: 1.5px solid #dde1e6; font-size: 0.9rem; }
+        .notes-area { width: 100%; min-height: 80px; padding: 0.5rem; border: 1.5px solid #dde1e6; border-radius: 8px; font-family: inherit; font-size: 0.9rem; resize: vertical; }
+        .save-btn { background: var(--primary); color: #fff; border: none; padding: 8px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 0.5rem; }
+
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .detail-panel { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <h2>🔐 SmartRebuild Admin</h2>
+        <p>Enter admin token to access the dashboard</p>
+        <div class="login-error" id="loginError">Invalid token. Try again.</div>
+        <input type="password" id="tokenInput" placeholder="Admin token..." onkeydown="if(event.key==='Enter')doLogin()">
+        <button onclick="doLogin()">Login</button>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">Smart<span>Rebuild</span> Admin</div>
+    <div class="nav-right">
+        <button onclick="loadData()">🔄 Refresh</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<!-- STATS -->
+<div class="stats" id="statsContainer">
+    <div class="stat-card"><div class="stat-num" id="statTotal">-</div><div class="stat-label">Total Audits</div></div>
+    <div class="stat-card"><div class="stat-num new" id="statNew">-</div><div class="stat-label">New</div></div>
+    <div class="stat-card"><div class="stat-num progress" id="statProgress">-</div><div class="stat-label">In Progress</div></div>
+    <div class="stat-card"><div class="stat-num done" id="statDone">-</div><div class="stat-label">Done</div></div>
+</div>
+
+<!-- FILTERS -->
+<div class="toolbar">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" data-filter="new" onclick="setFilter('new',this)">🔵 New</button>
+    <button class="filter-btn" data-filter="in_progress" onclick="setFilter('in_progress',this)">🟠 In Progress</button>
+    <button class="filter-btn" data-filter="done" onclick="setFilter('done',this)">🟢 Done</button>
+    <input type="text" class="search-input" placeholder="🔍 Search by name, email, city..." oninput="searchFilter(this.value)">
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th><th>Date</th><th>Status</th><th>Name</th><th>Email</th>
+                <th>City</th><th>Property</th><th>Budget</th><th>Frustration</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr><td colspan="10" style="text-align:center; padding:2rem; color:#999;">Loading...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+    <div class="detail-panel" id="detailPanel"></div>
+</div>
+
+<script>
+const API = 'http://81.17.140.198:8891';
+let TOKEN = '';
+let allAudits = [];
+let currentFilter = 'all';
+let searchQuery = '';
+
+// AUTH
+function doLogin() {
+    TOKEN = document.getElementById('tokenInput').value.trim();
+    if (!TOKEN) return;
+    fetch(API + '/api/stats', { headers: { 'Authorization': 'Bearer ' + TOKEN } })
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(() => {
+            localStorage.setItem('sr_token', TOKEN);
+            document.getElementById('loginOverlay').classList.add('hidden');
+            loadData();
+        })
+        .catch(() => {
+            document.getElementById('loginError').style.display = 'block';
+        });
+}
+
+function logout() {
+    localStorage.removeItem('sr_token');
+    TOKEN = '';
+    location.reload();
+}
+
+function authHeaders() { return { 'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json' }; }
+
+// LOAD DATA
+async function loadData() {
+    try {
+        const [statsRes, auditsRes] = await Promise.all([
+            fetch(API + '/api/stats', { headers: authHeaders() }),
+            fetch(API + '/api/audits', { headers: authHeaders() })
+        ]);
+        const stats = await statsRes.json();
+        const audits = await auditsRes.json();
+
+        document.getElementById('statTotal').textContent = stats.total;
+        document.getElementById('statNew').textContent = stats.new;
+        document.getElementById('statProgress').textContent = stats.in_progress;
+        document.getElementById('statDone').textContent = stats.done;
+
+        allAudits = audits.audits || [];
+        renderTable();
+    } catch(e) {
+        console.error('Load error:', e);
+    }
+}
+
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    let filtered = allAudits;
+
+    if (currentFilter !== 'all') {
+        filtered = filtered.filter(a => a.status === currentFilter);
+    }
+    if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(a =>
+            (a.name||'').toLowerCase().includes(q) ||
+            (a.email||'').toLowerCase().includes(q) ||
+            (a.city||'').toLowerCase().includes(q) ||
+            (a.phone||'').toLowerCase().includes(q)
+        );
+    }
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#999;">No audits found</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(a => {
+        const date = new Date(a.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+        const frust = parseInt(a.frustration) || 0;
+        const frustWidth = frust * 10;
+        return `<tr onclick="openDetail(${a.id})" style="cursor:pointer">
+            <td><strong>#${a.id}</strong></td>
+            <td style="white-space:nowrap;font-size:0.8rem;">${date}</td>
+            <td><span class="badge badge-${a.status}">${a.status}</span></td>
+            <td><strong>${esc(a.name)}</strong></td>
+            <td style="font-size:0.85rem;">${esc(a.email)}</td>
+            <td>${esc(a.city)}</td>
+            <td style="font-size:0.85rem;">${esc(a.property_type)}</td>
+            <td>${formatBudget(a.budget)}</td>
+            <td><div class="frustration-bar" style="width:${frustWidth}px;" title="${frust}/10"></div> ${frust}/10</td>
+            <td><button onclick="event.stopPropagation();openDetail(${a.id})" style="background:var(--primary);color:#fff;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">View</button></td>
+        </tr>`;
+    }).join('');
+}
+
+function formatBudget(b) {
+    const map = { 'under1k': '< €1K', '1k-3k': '€1-3K', '3k-5k': '€3-5K', '5k+': '€5K+' };
+    return map[b] || b || '—';
+}
+
+function esc(s) { if (!s) return '—'; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+}
+
+function searchFilter(q) { searchQuery = q; renderTable(); }
+
+// DETAIL PANEL
+function openDetail(id) {
+    const a = allAudits.find(x => x.id === id);
+    if (!a) return;
+
+    const panel = document.getElementById('detailPanel');
+    panel.innerHTML = `
+        <h2>Audit #${a.id} <button class="close-btn" onclick="closeDetail()">&times;</button></h2>
+
+        <div class="detail-section">
+            <h3>🏠 Property</h3>
+            <div class="detail-row"><div class="detail-label">Name</div><div class="detail-value">${esc(a.name)}</div></div>
+            <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value"><a href="mailto:${esc(a.email)}">${esc(a.email)}</a></div></div>
+            <div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value">${a.phone ? '<a href="tel:'+esc(a.phone)+'">'+esc(a.phone)+'</a>' : '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">City</div><div class="detail-value">${esc(a.city)}</div></div>
+            <div class="detail-row"><div class="detail-label">Property Type</div><div class="detail-value">${esc(a.property_type)}</div></div>
+            <div class="detail-row"><div class="detail-label">Area</div><div class="detail-value">${a.area_m2 ? a.area_m2 + ' m²' : '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Rooms</div><div class="detail-value">${a.rooms || '—'}</div></div>
+        </div>
+
+        <div class="detail-section">
+            <h3>⚡ System</h3>
+            <div class="detail-row"><div class="detail-label">Hub</div><div class="detail-value">${esc(a.current_hub) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Devices</div><div class="detail-value">${formatTags(a.devices)}</div></div>
+            <div class="detail-row"><div class="detail-label">Device Count</div><div class="detail-value">${esc(a.device_count) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Protocols</div><div class="detail-value">${formatTags(a.protocols)}</div></div>
+        </div>
+
+        <div class="detail-section">
+            <h3>🔥 Problems</h3>
+            <div class="detail-row"><div class="detail-label">Issues</div><div class="detail-value">${formatTags(a.problems)}</div></div>
+            <div class="detail-row"><div class="detail-label">Frustration</div><div class="detail-value"><div class="frustration-bar" style="width:${(parseInt(a.frustration)||0)*10}px;display:inline-block;vertical-align:middle;"></div> ${a.frustration||0}/10</div></div>
+            <div class="detail-row"><div class="detail-label">Pain Point</div><div class="detail-value" style="white-space:pre-wrap;">${esc(a.pain_point) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Install Year</div><div class="detail-value">${esc(a.install_year) || '—'}</div></div>
+        </div>
+
+        <div class="detail-section">
+            <h3>🎯 Goals</h3>
+            <div class="detail-row"><div class="detail-label">Priorities</div><div class="detail-value">${formatTags(a.priorities)}</div></div>
+            <div class="detail-row"><div class="detail-label">Voice Pref</div><div class="detail-value">${esc(a.voice_pref) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value" style="white-space:pre-wrap;">${esc(a.additional_notes) || '—'}</div></div>
+        </div>
+
+        <div class="detail-section">
+            <h3>💰 Budget & Timeline</h3>
+            <div class="detail-row"><div class="detail-label">Budget</div><div class="detail-value"><strong>${formatBudget(a.budget)}</strong></div></div>
+            <div class="detail-row"><div class="detail-label">Timeline</div><div class="detail-value">${esc(a.timeline) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Contact Via</div><div class="detail-value">${esc(a.contact_method) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Language</div><div class="detail-value">${(a.lang||'en').toUpperCase()}</div></div>
+        </div>
+
+        <div class="detail-section">
+            <h3>📋 Admin</h3>
+            <div class="detail-row" style="flex-direction:column;gap:0.5rem;">
+                <div>
+                    <label style="font-weight:600;font-size:0.85rem;">Status:</label>
+                    <select class="status-select" id="detailStatus_${a.id}" onchange="saveAudit(${a.id})">
+                        <option value="new" ${a.status==='new'?'selected':''}>🔵 New</option>
+                        <option value="in_progress" ${a.status==='in_progress'?'selected':''}>🟠 In Progress</option>
+                        <option value="done" ${a.status==='done'?'selected':''}>🟢 Done</option>
+                        <option value="rejected" ${a.status==='rejected'?'selected':''}>🔴 Rejected</option>
+                    </select>
+                </div>
+                <div style="margin-top:0.5rem;">
+                    <label style="font-weight:600;font-size:0.85rem;">Notes:</label>
+                    <textarea class="notes-area" id="detailNotes_${a.id}">${esc(a.admin_notes)}</textarea>
+                    <button class="save-btn" onclick="saveAudit(${a.id})">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:1rem;font-size:0.8rem;color:var(--text-light);">
+            Created: ${new Date(a.created_at).toLocaleString('en-GB')}
+        </div>
+    `;
+
+    document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetail() {
+    document.getElementById('detailOverlay').classList.remove('show');
+}
+
+function formatTags(str) {
+    if (!str) return '—';
+    return str.split(', ').map(t => `<span style="display:inline-block;background:#e8f0fe;color:#1565c0;padding:2px 8px;border-radius:10px;font-size:0.8rem;margin:2px;">${t}</span>`).join(' ');
+}
+
+async function saveAudit(id) {
+    const status = document.getElementById('detailStatus_' + id).value;
+    const notes = document.getElementById('detailNotes_' + id).value;
+    try {
+        await fetch(API + '/api/audits/' + id, {
+            method: 'PATCH',
+            headers: authHeaders(),
+            body: JSON.stringify({ status, admin_notes: notes })
+        });
+        // Update local data
+        const a = allAudits.find(x => x.id === id);
+        if (a) { a.status = status; a.admin_notes = notes; }
+        renderTable();
+        loadData(); // refresh stats
+    } catch(e) { console.error('Save error:', e); }
+}
+
+// INIT
+(function() {
+    const saved = localStorage.getItem('sr_token');
+    if (saved) {
+        TOKEN = saved;
+        fetch(API + '/api/stats', { headers: { 'Authorization': 'Bearer ' + TOKEN } })
+            .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+            .then(() => {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                loadData();
+            })
+            .catch(() => {
+                localStorage.removeItem('sr_token');
+                TOKEN = '';
+            });
+    }
+})();
+</script>
+</body>
+</html>

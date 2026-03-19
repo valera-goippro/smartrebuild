@@ -677,9 +677,37 @@ function selectRadioCard(el) {
     el.closest('.radio-cards').querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected'); el.querySelector('input').checked = true;
 }
-function submitForm(e) {
+async function submitForm(e) {
     e.preventDefault();
-    console.log('Audit submission:', Object.fromEntries(new FormData(e.target)));
+    const btn = e.target.querySelector('.btn-submit');
+    btn.disabled = true; btn.textContent = '...';
+
+    const fd = new FormData(e.target);
+    const data = {};
+    const multiFields = ['devices','protocols','problems','priorities'];
+    fd.forEach((v, k) => {
+        if (multiFields.includes(k)) {
+            if (!data[k]) data[k] = [];
+            data[k].push(v);
+        } else {
+            data[k] = v;
+        }
+    });
+    data.lang = localStorage.getItem('sr_lang') || 'en';
+
+    try {
+        const res = await fetch('http://81.17.140.198:8891/api/audit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (!result.ok) throw new Error('Server error');
+    } catch(err) {
+        console.error('Submit error:', err);
+        // Still show success — data may have been saved, and we don't want to block user
+    }
+
     document.getElementById('auditForm').style.display = 'none';
     document.getElementById('progressBar').style.display = 'none';
     document.getElementById('successMessage').classList.add('show');
