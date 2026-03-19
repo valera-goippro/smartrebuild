@@ -15,52 +15,57 @@
             --text-light: #666;
             --radius: 12px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-            color: var(--text);
-            line-height: 1.6;
+            color: var(--text); line-height: 1.6;
         }
 
         /* NAV */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e0e0e0;
-            padding: 0 2rem;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 64px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e0e0e0; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
         }
         .logo { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
         .logo span { color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
         nav ul { list-style: none; display: flex; gap: 2rem; }
         nav a { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
         nav a:hover { color: var(--primary); }
         .nav-cta {
             background: var(--primary); color: #fff !important;
-            padding: 0.5rem 1.2rem; border-radius: 8px;
-            transition: background .2s;
+            padding: 0.5rem 1.2rem; border-radius: 8px; transition: background .2s;
         }
         .nav-cta:hover { background: var(--primary-dark); }
+
+        /* LANG SWITCHER */
+        .lang-switch {
+            display: flex; gap: 2px; background: #e8e8e8; border-radius: 8px;
+            padding: 2px; font-size: 0.85rem;
+        }
+        .lang-btn {
+            padding: 4px 10px; border-radius: 6px; border: none;
+            background: transparent; cursor: pointer; font-weight: 600;
+            font-size: 0.85rem; color: var(--text-light); transition: all .2s;
+        }
+        .lang-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .lang-btn:hover { color: var(--primary); }
 
         /* HERO */
         .hero {
             padding: 140px 2rem 80px;
             background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6e 50%, #1a73e8 100%);
-            color: #fff;
-            text-align: center;
+            color: #fff; text-align: center;
         }
         .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
-        .hero h1 span { color: #64b5f6; }
+        .hero h1 .hl { color: #64b5f6; }
         .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 2rem; opacity: 0.9; }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .btn {
-            display: inline-block; padding: 0.85rem 2rem;
-            border-radius: 8px; text-decoration: none;
-            font-weight: 600; font-size: 1rem; transition: all .2s;
+            display: inline-block; padding: 0.85rem 2rem; border-radius: 8px;
+            text-decoration: none; font-weight: 600; font-size: 1rem; transition: all .2s;
         }
         .btn-primary { background: var(--accent); color: #fff; }
         .btn-primary:hover { background: #00a844; transform: translateY(-2px); }
@@ -78,8 +83,7 @@
         .problems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
         .problem-card {
             background: #fff; border-radius: var(--radius); padding: 2rem;
-            border-left: 4px solid #ef5350;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #ef5350; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .problem-card h3 { margin-bottom: 0.5rem; }
         .problem-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
@@ -88,8 +92,7 @@
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
         .service-card {
             background: #fff; border-radius: var(--radius); padding: 2rem;
-            border: 1px solid #e8e8e8;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
             transition: transform .2s, box-shadow .2s;
         }
         .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
@@ -104,8 +107,7 @@
             width: 56px; height: 56px; border-radius: 50%;
             background: var(--primary); color: #fff;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: 700;
-            margin: 0 auto 1rem;
+            font-size: 1.4rem; font-weight: 700; margin: 0 auto 1rem;
         }
         .step h3 { margin-bottom: 0.5rem; }
 
@@ -117,7 +119,7 @@
         }
         .price-card.featured { border-color: var(--primary); }
         .price-card.featured::after {
-            content: 'Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            content: attr(data-badge); position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
             background: var(--primary); color: #fff; padding: 2px 16px; border-radius: 20px; font-size: 0.85rem;
         }
         .price-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
@@ -125,7 +127,7 @@
         .price small { font-size: 0.9rem; color: var(--text-light); font-weight: 400; }
         .price-card ul { list-style: none; text-align: left; margin: 1.5rem 0; }
         .price-card li { padding: 0.4rem 0; border-bottom: 1px solid #f0f0f0; }
-        .price-card li::before { content: '✓ '; color: var(--accent); font-weight: 700; }
+        .price-card li::before { content: '\2713  '; color: var(--accent); font-weight: 700; }
 
         /* CTA */
         .cta-section {
@@ -136,13 +138,10 @@
         .cta-section p { margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem; }
 
         /* FOOTER */
-        footer {
-            background: var(--dark); color: #aaa; padding: 3rem 2rem; text-align: center;
-        }
+        footer { background: var(--dark); color: #aaa; padding: 3rem 2rem; text-align: center; }
         footer a { color: #64b5f6; text-decoration: none; }
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2rem; }
             nav ul { display: none; }
@@ -154,23 +153,30 @@
 
 <nav>
     <div class="logo">Smart<span>Rebuild</span></div>
-    <ul>
-        <li><a href="#problems">Problems</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#process">Process</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="audit.html" class="nav-cta">Free Audit</a></li>
-    </ul>
+    <div class="nav-right">
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('pt')">PT</button>
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+        </div>
+        <ul>
+            <li><a href="#problems" data-i="nav_problems">Problems</a></li>
+            <li><a href="#services" data-i="nav_services">Services</a></li>
+            <li><a href="#process" data-i="nav_process">Process</a></li>
+            <li><a href="#pricing" data-i="nav_pricing">Pricing</a></li>
+            <li><a href="audit.html" class="nav-cta" data-i="nav_audit">Free Audit</a></li>
+        </ul>
+    </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
     <div class="container">
-        <h1>Your Smart Home is <span>Outdated</span>.<br>We Fix That.</h1>
-        <p>Professional smart home upgrade and rebuild service in Porto metropolitan area. We modernize legacy systems, fix broken automations, and make your home truly intelligent.</p>
+        <h1 data-i="hero_title">Your Smart Home is <span class="hl">Outdated</span>.<br>We Fix That.</h1>
+        <p data-i="hero_sub">Professional smart home upgrade and rebuild service in Porto metropolitan area. We modernize legacy systems, fix broken automations, and make your home truly intelligent.</p>
         <div class="hero-buttons">
-            <a href="audit.html" class="btn btn-primary">Get Free Audit →</a>
-            <a href="#services" class="btn btn-outline">Our Services</a>
+            <a href="audit.html" class="btn btn-primary" data-i="hero_cta1">Get Free Audit →</a>
+            <a href="#services" class="btn btn-outline" data-i="hero_cta2">Our Services</a>
         </div>
     </div>
 </section>
@@ -178,38 +184,38 @@
 <!-- PROBLEMS -->
 <section class="problems" id="problems">
     <div class="container">
-        <h2 class="section-title">Sound Familiar?</h2>
-        <p class="section-sub">Most smart homes in Porto suffer from the same issues</p>
+        <h2 class="section-title" data-i="prob_title">Sound Familiar?</h2>
+        <p class="section-sub" data-i="prob_sub">Most smart homes in Porto suffer from the same issues</p>
         <div class="problems-grid">
             <div class="problem-card">
                 <div class="icon">🔌</div>
-                <h3>Dead Protocols</h3>
-                <p>Your system runs on X10, Insteon, or first-gen Z-Wave that nobody supports anymore. No updates, no new devices, no help.</p>
+                <h3 data-i="prob1_t">Dead Protocols</h3>
+                <p data-i="prob1_d">Your system runs on X10, Insteon, or first-gen Z-Wave that nobody supports anymore. No updates, no new devices, no help.</p>
             </div>
             <div class="problem-card">
                 <div class="icon">📱</div>
-                <h3>App Chaos</h3>
-                <p>7 different apps to control lights, blinds, climate, cameras, music. Nothing talks to anything. Guests can't figure it out.</p>
+                <h3 data-i="prob2_t">App Chaos</h3>
+                <p data-i="prob2_d">7 different apps to control lights, blinds, climate, cameras, music. Nothing talks to anything. Guests can't figure it out.</p>
             </div>
             <div class="problem-card">
                 <div class="icon">🔧</div>
-                <h3>Installer Vanished</h3>
-                <p>The company that installed your system 5 years ago is gone. Nobody knows the passwords, nobody can change the config.</p>
+                <h3 data-i="prob3_t">Installer Vanished</h3>
+                <p data-i="prob3_d">The company that installed your system 5 years ago is gone. Nobody knows the passwords, nobody can change the config.</p>
             </div>
             <div class="problem-card">
                 <div class="icon">🐌</div>
-                <h3>Slow & Unreliable</h3>
-                <p>Lights take 3 seconds to respond. Automations fire randomly at 3 AM. The "smart" home feels dumb.</p>
+                <h3 data-i="prob4_t">Slow & Unreliable</h3>
+                <p data-i="prob4_d">Lights take 3 seconds to respond. Automations fire randomly at 3 AM. The "smart" home feels dumb.</p>
             </div>
             <div class="problem-card">
                 <div class="icon">🔒</div>
-                <h3>Security Holes</h3>
-                <p>Cloud cameras from 2018 with known vulnerabilities. Default passwords. No firmware updates since installation.</p>
+                <h3 data-i="prob5_t">Security Holes</h3>
+                <p data-i="prob5_d">Cloud cameras from 2018 with known vulnerabilities. Default passwords. No firmware updates since installation.</p>
             </div>
             <div class="problem-card">
                 <div class="icon">💸</div>
-                <h3>Wasted Investment</h3>
-                <p>You spent €5K–€20K on a smart home that doesn't work. Ripping everything out feels like throwing money away.</p>
+                <h3 data-i="prob6_t">Wasted Investment</h3>
+                <p data-i="prob6_d">You spent €5K–€20K on a smart home that doesn't work. Ripping everything out feels like throwing money away.</p>
             </div>
         </div>
     </div>
@@ -218,38 +224,38 @@
 <!-- SERVICES -->
 <section id="services">
     <div class="container">
-        <h2 class="section-title">What We Do</h2>
-        <p class="section-sub">We don't sell gadgets — we rebuild broken smart homes into working ones</p>
+        <h2 class="section-title" data-i="svc_title">What We Do</h2>
+        <p class="section-sub" data-i="svc_sub">We don't sell gadgets — we rebuild broken smart homes into working ones</p>
         <div class="services-grid">
             <div class="service-card">
                 <div class="icon">🔍</div>
-                <h3>System Audit</h3>
-                <p>Complete analysis of your current installation: protocols, devices, wiring, network. We find what works, what doesn't, and what to keep.</p>
+                <h3 data-i="svc1_t">System Audit</h3>
+                <p data-i="svc1_d">Complete analysis of your current installation: protocols, devices, wiring, network. We find what works, what doesn't, and what to keep.</p>
             </div>
             <div class="service-card">
                 <div class="icon">🔄</div>
-                <h3>Protocol Migration</h3>
-                <p>Move from legacy protocols (X10, Insteon, old Z-Wave) to modern standards: Zigbee 3.0, Matter, Thread, WiFi 6.</p>
+                <h3 data-i="svc2_t">Protocol Migration</h3>
+                <p data-i="svc2_d">Move from legacy protocols (X10, Insteon, old Z-Wave) to modern standards: Zigbee 3.0, Matter, Thread, WiFi 6.</p>
             </div>
             <div class="service-card">
                 <div class="icon">🏠</div>
-                <h3>Home Assistant Deploy</h3>
-                <p>Professional installation and configuration of Home Assistant as your central hub. Local control, no cloud dependency.</p>
+                <h3 data-i="svc3_t">Home Assistant Deploy</h3>
+                <p data-i="svc3_d">Professional installation and configuration of Home Assistant as your central hub. Local control, no cloud dependency.</p>
             </div>
             <div class="service-card">
                 <div class="icon">📷</div>
-                <h3>Security Upgrade</h3>
-                <p>Replace vulnerable cloud cameras with local NVR + AI detection. Proper network segmentation. Real security.</p>
+                <h3 data-i="svc4_t">Security Upgrade</h3>
+                <p data-i="svc4_d">Replace vulnerable cloud cameras with local NVR + AI detection. Proper network segmentation. Real security.</p>
             </div>
             <div class="service-card">
                 <div class="icon">🎤</div>
-                <h3>Voice & AI Integration</h3>
-                <p>Set up voice assistants that actually work. Custom automations powered by AI. Natural language control of your home.</p>
+                <h3 data-i="svc5_t">Voice & AI Integration</h3>
+                <p data-i="svc5_d">Set up voice assistants that actually work. Custom automations powered by AI. Natural language control of your home.</p>
             </div>
             <div class="service-card">
                 <div class="icon">🛠️</div>
-                <h3>Ongoing Support</h3>
-                <p>Monthly maintenance plans. Remote monitoring. We're here when something breaks — unlike your previous installer.</p>
+                <h3 data-i="svc6_t">Ongoing Support</h3>
+                <p data-i="svc6_d">Monthly maintenance plans. Remote monitoring. We're here when something breaks — unlike your previous installer.</p>
             </div>
         </div>
     </div>
@@ -258,28 +264,28 @@
 <!-- PROCESS -->
 <section class="process" id="process">
     <div class="container">
-        <h2 class="section-title">How It Works</h2>
-        <p class="section-sub">From broken to brilliant in 4 steps</p>
+        <h2 class="section-title" data-i="proc_title">How It Works</h2>
+        <p class="section-sub" data-i="proc_sub">From broken to brilliant in 4 steps</p>
         <div class="steps">
             <div class="step">
                 <div class="step-num">1</div>
-                <h3>Free Audit</h3>
-                <p>Fill out our online form or schedule a visit. We assess your current system and identify all issues.</p>
+                <h3 data-i="step1_t">Free Audit</h3>
+                <p data-i="step1_d">Fill out our online form or schedule a visit. We assess your current system and identify all issues.</p>
             </div>
             <div class="step">
                 <div class="step-num">2</div>
-                <h3>Rebuild Plan</h3>
-                <p>We create a detailed upgrade plan: what to keep, what to replace, timeline, and transparent pricing.</p>
+                <h3 data-i="step2_t">Rebuild Plan</h3>
+                <p data-i="step2_d">We create a detailed upgrade plan: what to keep, what to replace, timeline, and transparent pricing.</p>
             </div>
             <div class="step">
                 <div class="step-num">3</div>
-                <h3>Installation</h3>
-                <p>Our team upgrades your system with minimal disruption. Most projects complete in 1–3 days.</p>
+                <h3 data-i="step3_t">Installation</h3>
+                <p data-i="step3_d">Our team upgrades your system with minimal disruption. Most projects complete in 1–3 days.</p>
             </div>
             <div class="step">
                 <div class="step-num">4</div>
-                <h3>Handover</h3>
-                <p>Full training for your family. Documentation. Dashboards. Everything works from day one.</p>
+                <h3 data-i="step4_t">Handover</h3>
+                <p data-i="step4_d">Full training for your family. Documentation. Dashboards. Everything works from day one.</p>
             </div>
         </div>
     </div>
@@ -288,44 +294,44 @@
 <!-- PRICING -->
 <section id="pricing">
     <div class="container">
-        <h2 class="section-title">Pricing</h2>
-        <p class="section-sub">Transparent pricing, no surprises</p>
+        <h2 class="section-title" data-i="price_title">Pricing</h2>
+        <p class="section-sub" data-i="price_sub">Transparent pricing, no surprises</p>
         <div class="pricing-grid">
             <div class="price-card">
-                <h3>Audit Only</h3>
-                <div class="price">Free</div>
+                <h3 data-i="plan1_t">Audit Only</h3>
+                <div class="price" data-i="plan1_price">Free</div>
                 <ul>
-                    <li>Online questionnaire review</li>
-                    <li>System compatibility check</li>
-                    <li>Upgrade recommendations</li>
-                    <li>Cost estimate</li>
+                    <li data-i="plan1_f1">Online questionnaire review</li>
+                    <li data-i="plan1_f2">System compatibility check</li>
+                    <li data-i="plan1_f3">Upgrade recommendations</li>
+                    <li data-i="plan1_f4">Cost estimate</li>
                 </ul>
-                <a href="audit.html" class="btn btn-primary" style="width:100%">Start Audit</a>
+                <a href="audit.html" class="btn btn-primary" style="width:100%" data-i="plan_cta_audit">Start Audit</a>
             </div>
-            <div class="price-card featured">
-                <h3>Standard Rebuild</h3>
-                <div class="price">€990<small> + devices</small></div>
+            <div class="price-card featured" data-badge="Popular" data-i-badge="badge_popular">
+                <h3 data-i="plan2_t">Standard Rebuild</h3>
+                <div class="price">€990<small data-i="plan_devices"> + devices</small></div>
                 <ul>
-                    <li>On-site assessment</li>
-                    <li>Home Assistant setup</li>
-                    <li>Up to 30 devices migrated</li>
-                    <li>Dashboard & mobile app</li>
-                    <li>1 month support included</li>
+                    <li data-i="plan2_f1">On-site assessment</li>
+                    <li data-i="plan2_f2">Home Assistant setup</li>
+                    <li data-i="plan2_f3">Up to 30 devices migrated</li>
+                    <li data-i="plan2_f4">Dashboard & mobile app</li>
+                    <li data-i="plan2_f5">1 month support included</li>
                 </ul>
-                <a href="audit.html" class="btn btn-primary" style="width:100%">Get Started</a>
+                <a href="audit.html" class="btn btn-primary" style="width:100%" data-i="plan_cta_start">Get Started</a>
             </div>
             <div class="price-card">
-                <h3>Full Overhaul</h3>
-                <div class="price">€2,490<small> + devices</small></div>
+                <h3 data-i="plan3_t">Full Overhaul</h3>
+                <div class="price">€2,490<small data-i="plan_devices"> + devices</small></div>
                 <ul>
-                    <li>Complete system redesign</li>
-                    <li>Network infrastructure upgrade</li>
-                    <li>Unlimited devices</li>
-                    <li>Security camera integration</li>
-                    <li>Voice & AI setup</li>
-                    <li>6 months priority support</li>
+                    <li data-i="plan3_f1">Complete system redesign</li>
+                    <li data-i="plan3_f2">Network infrastructure upgrade</li>
+                    <li data-i="plan3_f3">Unlimited devices</li>
+                    <li data-i="plan3_f4">Security camera integration</li>
+                    <li data-i="plan3_f5">Voice & AI setup</li>
+                    <li data-i="plan3_f6">6 months priority support</li>
                 </ul>
-                <a href="audit.html" class="btn btn-primary" style="width:100%">Get Started</a>
+                <a href="audit.html" class="btn btn-primary" style="width:100%" data-i="plan_cta_start">Get Started</a>
             </div>
         </div>
     </div>
@@ -334,9 +340,9 @@
 <!-- CTA -->
 <section class="cta-section">
     <div class="container">
-        <h2>Ready to Fix Your Smart Home?</h2>
-        <p>Start with a free audit — it takes 5 minutes. We'll tell you exactly what needs to change and how much it costs.</p>
-        <a href="audit.html" class="btn btn-primary" style="font-size:1.1rem; padding: 1rem 2.5rem;">Get Free Audit →</a>
+        <h2 data-i="cta_title">Ready to Fix Your Smart Home?</h2>
+        <p data-i="cta_sub">Start with a free audit — it takes 5 minutes. We'll tell you exactly what needs to change and how much it costs.</p>
+        <a href="audit.html" class="btn btn-primary" style="font-size:1.1rem; padding:1rem 2.5rem;" data-i="cta_btn">Get Free Audit →</a>
     </div>
 </section>
 
@@ -344,16 +350,156 @@
 <footer>
     <div class="container">
         <div class="footer-links">
-            <a href="#services">Services</a>
-            <a href="#process">Process</a>
-            <a href="#pricing">Pricing</a>
-            <a href="audit.html">Free Audit</a>
+            <a href="#services" data-i="nav_services">Services</a>
+            <a href="#process" data-i="nav_process">Process</a>
+            <a href="#pricing" data-i="nav_pricing">Pricing</a>
+            <a href="audit.html" data-i="nav_audit">Free Audit</a>
         </div>
-        <p><strong>SmartRebuild</strong> — Smart Home Upgrade Service</p>
-        <p>Porto Metropolitan Area, Portugal</p>
+        <p><strong>SmartRebuild</strong> — <span data-i="footer_tagline">Smart Home Upgrade Service</span></p>
+        <p data-i="footer_location">Porto Metropolitan Area, Portugal</p>
         <p style="margin-top:1rem; font-size:0.85rem;">© 2026 SmartRebuild. Part of <a href="https://gsm-travel.com">GSM Travel</a> ecosystem.</p>
     </div>
 </footer>
 
+<script>
+const T = {
+en: {
+    nav_problems: "Problems", nav_services: "Services", nav_process: "Process", nav_pricing: "Pricing", nav_audit: "Free Audit",
+    hero_title: 'Your Smart Home is <span class="hl">Outdated</span>.<br>We Fix That.',
+    hero_sub: "Professional smart home upgrade and rebuild service in Porto metropolitan area. We modernize legacy systems, fix broken automations, and make your home truly intelligent.",
+    hero_cta1: "Get Free Audit →", hero_cta2: "Our Services",
+    prob_title: "Sound Familiar?", prob_sub: "Most smart homes in Porto suffer from the same issues",
+    prob1_t: "Dead Protocols", prob1_d: "Your system runs on X10, Insteon, or first-gen Z-Wave that nobody supports anymore. No updates, no new devices, no help.",
+    prob2_t: "App Chaos", prob2_d: '7 different apps to control lights, blinds, climate, cameras, music. Nothing talks to anything. Guests can\'t figure it out.',
+    prob3_t: "Installer Vanished", prob3_d: "The company that installed your system 5 years ago is gone. Nobody knows the passwords, nobody can change the config.",
+    prob4_t: "Slow & Unreliable", prob4_d: 'Lights take 3 seconds to respond. Automations fire randomly at 3 AM. The "smart" home feels dumb.',
+    prob5_t: "Security Holes", prob5_d: "Cloud cameras from 2018 with known vulnerabilities. Default passwords. No firmware updates since installation.",
+    prob6_t: "Wasted Investment", prob6_d: "You spent €5K–€20K on a smart home that doesn't work. Ripping everything out feels like throwing money away.",
+    svc_title: "What We Do", svc_sub: "We don't sell gadgets — we rebuild broken smart homes into working ones",
+    svc1_t: "System Audit", svc1_d: "Complete analysis of your current installation: protocols, devices, wiring, network. We find what works, what doesn't, and what to keep.",
+    svc2_t: "Protocol Migration", svc2_d: "Move from legacy protocols (X10, Insteon, old Z-Wave) to modern standards: Zigbee 3.0, Matter, Thread, WiFi 6.",
+    svc3_t: "Home Assistant Deploy", svc3_d: "Professional installation and configuration of Home Assistant as your central hub. Local control, no cloud dependency.",
+    svc4_t: "Security Upgrade", svc4_d: "Replace vulnerable cloud cameras with local NVR + AI detection. Proper network segmentation. Real security.",
+    svc5_t: "Voice & AI Integration", svc5_d: "Set up voice assistants that actually work. Custom automations powered by AI. Natural language control of your home.",
+    svc6_t: "Ongoing Support", svc6_d: "Monthly maintenance plans. Remote monitoring. We're here when something breaks — unlike your previous installer.",
+    proc_title: "How It Works", proc_sub: "From broken to brilliant in 4 steps",
+    step1_t: "Free Audit", step1_d: "Fill out our online form or schedule a visit. We assess your current system and identify all issues.",
+    step2_t: "Rebuild Plan", step2_d: "We create a detailed upgrade plan: what to keep, what to replace, timeline, and transparent pricing.",
+    step3_t: "Installation", step3_d: "Our team upgrades your system with minimal disruption. Most projects complete in 1–3 days.",
+    step4_t: "Handover", step4_d: "Full training for your family. Documentation. Dashboards. Everything works from day one.",
+    price_title: "Pricing", price_sub: "Transparent pricing, no surprises",
+    plan1_t: "Audit Only", plan1_price: "Free",
+    plan1_f1: "Online questionnaire review", plan1_f2: "System compatibility check", plan1_f3: "Upgrade recommendations", plan1_f4: "Cost estimate",
+    plan_cta_audit: "Start Audit", plan_cta_start: "Get Started",
+    plan2_t: "Standard Rebuild", plan_devices: " + devices",
+    plan2_f1: "On-site assessment", plan2_f2: "Home Assistant setup", plan2_f3: "Up to 30 devices migrated", plan2_f4: "Dashboard & mobile app", plan2_f5: "1 month support included",
+    plan3_t: "Full Overhaul",
+    plan3_f1: "Complete system redesign", plan3_f2: "Network infrastructure upgrade", plan3_f3: "Unlimited devices", plan3_f4: "Security camera integration", plan3_f5: "Voice & AI setup", plan3_f6: "6 months priority support",
+    badge_popular: "Popular",
+    cta_title: "Ready to Fix Your Smart Home?", cta_sub: "Start with a free audit — it takes 5 minutes. We'll tell you exactly what needs to change and how much it costs.", cta_btn: "Get Free Audit →",
+    footer_tagline: "Smart Home Upgrade Service", footer_location: "Porto Metropolitan Area, Portugal"
+},
+pt: {
+    nav_problems: "Problemas", nav_services: "Serviços", nav_process: "Processo", nav_pricing: "Preços", nav_audit: "Auditoria Grátis",
+    hero_title: 'A sua Casa Inteligente está <span class="hl">Desatualizada</span>.<br>Nós Resolvemos.',
+    hero_sub: "Serviço profissional de modernização de casas inteligentes na área metropolitana do Porto. Modernizamos sistemas antigos, corrigimos automações e tornamos a sua casa verdadeiramente inteligente.",
+    hero_cta1: "Auditoria Grátis →", hero_cta2: "Nossos Serviços",
+    prob_title: "Parece Familiar?", prob_sub: "A maioria das casas inteligentes no Porto sofre dos mesmos problemas",
+    prob1_t: "Protocolos Mortos", prob1_d: "O seu sistema usa X10, Insteon ou Z-Wave de primeira geração que já ninguém suporta. Sem atualizações, sem novos dispositivos, sem ajuda.",
+    prob2_t: "Caos de Apps", prob2_d: "7 aplicações diferentes para controlar luzes, estores, clima, câmaras, música. Nada comunica entre si. Os convidados não conseguem usar.",
+    prob3_t: "Instalador Desapareceu", prob3_d: "A empresa que instalou o seu sistema há 5 anos já não existe. Ninguém sabe as passwords, ninguém consegue alterar a configuração.",
+    prob4_t: "Lento e Instável", prob4_d: "As luzes demoram 3 segundos a responder. Automações disparam aleatoriamente às 3 da manhã. A casa 'inteligente' parece burra.",
+    prob5_t: "Falhas de Segurança", prob5_d: "Câmaras cloud de 2018 com vulnerabilidades conhecidas. Passwords padrão. Sem atualizações de firmware desde a instalação.",
+    prob6_t: "Investimento Perdido", prob6_d: "Gastou €5K–€20K numa casa inteligente que não funciona. Arrancar tudo parece deitar dinheiro fora.",
+    svc_title: "O Que Fazemos", svc_sub: "Não vendemos gadgets — reconstruímos casas inteligentes avariadas em sistemas funcionais",
+    svc1_t: "Auditoria do Sistema", svc1_d: "Análise completa da sua instalação atual: protocolos, dispositivos, cablagem, rede. Encontramos o que funciona, o que não funciona e o que manter.",
+    svc2_t: "Migração de Protocolos", svc2_d: "Migração de protocolos antigos (X10, Insteon, Z-Wave antigo) para padrões modernos: Zigbee 3.0, Matter, Thread, WiFi 6.",
+    svc3_t: "Instalação Home Assistant", svc3_d: "Instalação e configuração profissional do Home Assistant como hub central. Controlo local, sem dependência da cloud.",
+    svc4_t: "Upgrade de Segurança", svc4_d: "Substituição de câmaras cloud vulneráveis por NVR local + deteção AI. Segmentação de rede adequada. Segurança real.",
+    svc5_t: "Voz & Integração AI", svc5_d: "Configuração de assistentes de voz que realmente funcionam. Automações personalizadas com AI. Controlo por linguagem natural.",
+    svc6_t: "Suporte Contínuo", svc6_d: "Planos de manutenção mensal. Monitorização remota. Estamos aqui quando algo avaria — ao contrário do seu instalador anterior.",
+    proc_title: "Como Funciona", proc_sub: "De avariado a brilhante em 4 passos",
+    step1_t: "Auditoria Grátis", step1_d: "Preencha o nosso formulário online ou agende uma visita. Avaliamos o seu sistema atual e identificamos todos os problemas.",
+    step2_t: "Plano de Reconstrução", step2_d: "Criamos um plano detalhado: o que manter, o que substituir, cronograma e preços transparentes.",
+    step3_t: "Instalação", step3_d: "A nossa equipa moderniza o seu sistema com o mínimo de perturbação. A maioria dos projetos fica pronta em 1–3 dias.",
+    step4_t: "Entrega", step4_d: "Formação completa para a sua família. Documentação. Dashboards. Tudo funciona desde o primeiro dia.",
+    price_title: "Preços", price_sub: "Preços transparentes, sem surpresas",
+    plan1_t: "Só Auditoria", plan1_price: "Grátis",
+    plan1_f1: "Revisão do questionário online", plan1_f2: "Verificação de compatibilidade", plan1_f3: "Recomendações de upgrade", plan1_f4: "Estimativa de custos",
+    plan_cta_audit: "Iniciar Auditoria", plan_cta_start: "Começar",
+    plan2_t: "Reconstrução Standard", plan_devices: " + dispositivos",
+    plan2_f1: "Avaliação no local", plan2_f2: "Configuração Home Assistant", plan2_f3: "Até 30 dispositivos migrados", plan2_f4: "Dashboard & app móvel", plan2_f5: "1 mês de suporte incluído",
+    plan3_t: "Renovação Completa",
+    plan3_f1: "Redesign completo do sistema", plan3_f2: "Upgrade de infraestrutura de rede", plan3_f3: "Dispositivos ilimitados", plan3_f4: "Integração de câmaras de segurança", plan3_f5: "Configuração de voz & AI", plan3_f6: "6 meses de suporte prioritário",
+    badge_popular: "Popular",
+    cta_title: "Pronto para Reparar a sua Casa Inteligente?", cta_sub: "Comece com uma auditoria grátis — demora 5 minutos. Dizemos-lhe exatamente o que precisa de mudar e quanto custa.", cta_btn: "Auditoria Grátis →",
+    footer_tagline: "Serviço de Modernização de Casas Inteligentes", footer_location: "Área Metropolitana do Porto, Portugal"
+},
+ru: {
+    nav_problems: "Проблемы", nav_services: "Услуги", nav_process: "Процесс", nav_pricing: "Цены", nav_audit: "Бесплатный аудит",
+    hero_title: 'Ваш Умный Дом <span class="hl">Устарел</span>.<br>Мы Это Исправим.',
+    hero_sub: "Профессиональная модернизация умных домов в районе Порту. Обновляем устаревшие системы, чиним автоматизации и делаем ваш дом по-настоящему умным.",
+    hero_cta1: "Бесплатный аудит →", hero_cta2: "Наши услуги",
+    prob_title: "Знакомо?", prob_sub: "Большинство умных домов в Порту страдают от одних и тех же проблем",
+    prob1_t: "Мёртвые протоколы", prob1_d: "Ваша система работает на X10, Insteon или Z-Wave первого поколения, которые больше никто не поддерживает. Нет обновлений, нет новых устройств, нет помощи.",
+    prob2_t: "Хаос приложений", prob2_d: "7 разных приложений для управления светом, шторами, климатом, камерами, музыкой. Ничего не связано друг с другом. Гости не могут разобраться.",
+    prob3_t: "Установщик исчез", prob3_d: "Компания, которая установила вашу систему 5 лет назад, закрылась. Никто не знает паролей, никто не может изменить настройки.",
+    prob4_t: "Медленно и ненадёжно", prob4_d: 'Свет включается 3 секунды. Автоматизации срабатывают случайно в 3 часа ночи. "Умный" дом кажется глупым.',
+    prob5_t: "Дыры в безопасности", prob5_d: "Облачные камеры 2018 года с известными уязвимостями. Стандартные пароли. Прошивка не обновлялась с момента установки.",
+    prob6_t: "Потерянные инвестиции", prob6_d: "Вы потратили €5K–€20K на умный дом, который не работает. Выбросить всё — значит выбросить деньги.",
+    svc_title: "Что мы делаем", svc_sub: "Мы не продаём гаджеты — мы перестраиваем сломанные умные дома в работающие",
+    svc1_t: "Аудит системы", svc1_d: "Полный анализ вашей текущей установки: протоколы, устройства, проводка, сеть. Находим что работает, что нет, и что оставить.",
+    svc2_t: "Миграция протоколов", svc2_d: "Переход с устаревших протоколов (X10, Insteon, старый Z-Wave) на современные стандарты: Zigbee 3.0, Matter, Thread, WiFi 6.",
+    svc3_t: "Установка Home Assistant", svc3_d: "Профессиональная установка и настройка Home Assistant как центрального хаба. Локальное управление, без зависимости от облака.",
+    svc4_t: "Апгрейд безопасности", svc4_d: "Замена уязвимых облачных камер на локальный NVR + AI-детекция. Правильная сегментация сети. Настоящая безопасность.",
+    svc5_t: "Голос и AI интеграция", svc5_d: "Настройка голосовых ассистентов, которые реально работают. Кастомные автоматизации на базе AI. Управление домом голосом.",
+    svc6_t: "Постоянная поддержка", svc6_d: "Ежемесячные планы обслуживания. Удалённый мониторинг. Мы на связи, когда что-то ломается — в отличие от вашего предыдущего установщика.",
+    proc_title: "Как это работает", proc_sub: "От сломанного до идеального за 4 шага",
+    step1_t: "Бесплатный аудит", step1_d: "Заполните онлайн-форму или запишитесь на визит. Мы оценим вашу систему и найдём все проблемы.",
+    step2_t: "План перестройки", step2_d: "Мы создаём детальный план: что оставить, что заменить, сроки и прозрачные цены.",
+    step3_t: "Установка", step3_d: "Наша команда модернизирует систему с минимальными неудобствами. Большинство проектов за 1–3 дня.",
+    step4_t: "Передача", step4_d: "Полное обучение для вашей семьи. Документация. Дашборды. Всё работает с первого дня.",
+    price_title: "Цены", price_sub: "Прозрачные цены, без сюрпризов",
+    plan1_t: "Только аудит", plan1_price: "Бесплатно",
+    plan1_f1: "Обзор онлайн-анкеты", plan1_f2: "Проверка совместимости", plan1_f3: "Рекомендации по апгрейду", plan1_f4: "Оценка стоимости",
+    plan_cta_audit: "Начать аудит", plan_cta_start: "Начать",
+    plan2_t: "Стандартная перестройка", plan_devices: " + устройства",
+    plan2_f1: "Выезд на объект", plan2_f2: "Настройка Home Assistant", plan2_f3: "До 30 устройств мигрировано", plan2_f4: "Дашборд и мобильное приложение", plan2_f5: "1 месяц поддержки включён",
+    plan3_t: "Полная перестройка",
+    plan3_f1: "Полный редизайн системы", plan3_f2: "Апгрейд сетевой инфраструктуры", plan3_f3: "Неограниченное кол-во устройств", plan3_f4: "Интеграция камер безопасности", plan3_f5: "Настройка голоса и AI", plan3_f6: "6 месяцев приоритетной поддержки",
+    badge_popular: "Популярно",
+    cta_title: "Готовы починить свой Умный Дом?", cta_sub: "Начните с бесплатного аудита — это займёт 5 минут. Мы расскажем, что именно нужно изменить и сколько это стоит.", cta_btn: "Бесплатный аудит →",
+    footer_tagline: "Сервис модернизации умных домов", footer_location: "Район Порту, Португалия"
+}
+};
+
+function detectLang() {
+    const saved = localStorage.getItem('sr_lang');
+    if (saved && T[saved]) return saved;
+    const bl = (navigator.language || '').toLowerCase();
+    if (bl.startsWith('pt')) return 'pt';
+    if (bl.startsWith('ru') || bl.startsWith('uk') || bl.startsWith('be')) return 'ru';
+    return 'en';
+}
+
+function setLang(lang) {
+    if (!T[lang]) return;
+    localStorage.setItem('sr_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang));
+    const t = T[lang];
+    document.querySelectorAll('[data-i]').forEach(el => {
+        const key = el.getAttribute('data-i');
+        if (t[key] !== undefined) { el.innerHTML = t[key]; }
+    });
+    // badge on featured card
+    document.querySelectorAll('[data-i-badge]').forEach(el => {
+        const key = el.getAttribute('data-i-badge');
+        if (t[key]) el.setAttribute('data-badge', t[key]);
+    });
+    document.documentElement.lang = lang;
+}
+
+setLang(detectLang());
+</script>
 </body>
 </html>

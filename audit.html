@@ -6,39 +6,34 @@
     <title>Free Smart Home Audit — SmartRebuild</title>
     <style>
         :root {
-            --primary: #1a73e8;
-            --primary-dark: #1557b0;
-            --accent: #00c853;
-            --dark: #1a1a2e;
-            --gray: #f5f7fa;
-            --text: #333;
-            --text-light: #666;
-            --radius: 12px;
-            --border: #dde1e6;
+            --primary: #1a73e8; --primary-dark: #1557b0; --accent: #00c853;
+            --dark: #1a1a2e; --gray: #f5f7fa; --text: #333; --text-light: #666;
+            --radius: 12px; --border: #dde1e6;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-            color: var(--text);
-            line-height: 1.6;
-            background: var(--gray);
+            color: var(--text); line-height: 1.6; background: var(--gray);
         }
 
         /* NAV */
         nav {
-            background: #fff;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 0 2rem;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 64px;
+            background: #fff; border-bottom: 1px solid #e0e0e0; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
         }
         .logo { font-size: 1.4rem; font-weight: 700; color: var(--dark); text-decoration: none; }
         .logo span { color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
         .nav-back { text-decoration: none; color: var(--primary); font-weight: 500; }
+        .lang-switch { display: flex; gap: 2px; background: #e8e8e8; border-radius: 8px; padding: 2px; font-size: 0.85rem; }
+        .lang-btn {
+            padding: 4px 10px; border-radius: 6px; border: none;
+            background: transparent; cursor: pointer; font-weight: 600;
+            font-size: 0.85rem; color: var(--text-light); transition: all .2s;
+        }
+        .lang-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        /* MAIN */
+        /* HEADER */
         .page-header {
             background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6e 100%);
             color: #fff; text-align: center; padding: 3rem 2rem 2rem;
@@ -46,9 +41,7 @@
         .page-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
         .page-header p { opacity: 0.85; font-size: 1.1rem; }
 
-        .form-container {
-            max-width: 800px; margin: -1.5rem auto 3rem; padding: 0 1rem;
-        }
+        .form-container { max-width: 800px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
 
         /* PROGRESS */
         .progress-bar {
@@ -67,46 +60,34 @@
             width: 28px; height: 28px; border-radius: 50%;
             border: 2px solid var(--border);
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700;
-            transition: all .2s;
+            font-size: 0.8rem; font-weight: 700; transition: all .2s;
         }
         .progress-step.active .step-dot { background: var(--primary); color: #fff; border-color: var(--primary); }
         .progress-step.done .step-dot { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-        /* FORM SECTIONS */
+        /* FORM */
         .form-section {
-            background: #fff; border-radius: var(--radius);
-            padding: 2rem; margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            display: none;
+            background: #fff; border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: none;
         }
         .form-section.active { display: block; }
-        .form-section h2 {
-            font-size: 1.4rem; margin-bottom: 0.3rem;
-            display: flex; align-items: center; gap: 0.5rem;
-        }
+        .form-section h2 { font-size: 1.4rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.5rem; }
         .form-section .section-desc { color: var(--text-light); margin-bottom: 1.5rem; }
 
-        /* FORM ELEMENTS */
         .form-group { margin-bottom: 1.25rem; }
-        label {
-            display: block; font-weight: 600; margin-bottom: 0.4rem;
-            font-size: 0.95rem;
-        }
+        label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.95rem; }
         label .hint { font-weight: 400; color: var(--text-light); font-size: 0.85rem; }
         input[type="text"], input[type="email"], input[type="tel"],
         input[type="number"], select, textarea {
             width: 100%; padding: 0.7rem 1rem;
             border: 1.5px solid var(--border); border-radius: 8px;
-            font-size: 1rem; font-family: inherit;
-            transition: border-color .2s;
+            font-size: 1rem; font-family: inherit; transition: border-color .2s;
         }
         input:focus, select:focus, textarea:focus {
             outline: none; border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
         }
         textarea { resize: vertical; min-height: 100px; }
-
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
 
@@ -119,30 +100,24 @@
         .checkbox-item:hover { border-color: var(--primary); }
         .checkbox-item input { accent-color: var(--primary); }
 
-        .radio-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+        .radio-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
         .radio-card {
             border: 1.5px solid var(--border); border-radius: 8px;
-            padding: 1rem; cursor: pointer; transition: all .2s;
-            text-align: center;
+            padding: 1rem; cursor: pointer; transition: all .2s; text-align: center;
         }
         .radio-card:hover { border-color: var(--primary); }
         .radio-card.selected { border-color: var(--primary); background: #e8f0fe; }
         .radio-card .rc-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
         .radio-card input { display: none; }
 
-        /* SLIDER */
         .range-group { margin-top: 0.5rem; }
-        input[type="range"] {
-            width: 100%; accent-color: var(--primary);
-        }
+        input[type="range"] { width: 100%; accent-color: var(--primary); }
         .range-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-light); }
 
-        /* BUTTONS */
         .form-nav { display: flex; justify-content: space-between; margin-top: 1.5rem; }
         .btn {
             padding: 0.75rem 2rem; border-radius: 8px; border: none;
-            font-size: 1rem; font-weight: 600; cursor: pointer;
-            transition: all .2s;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all .2s;
         }
         .btn-next { background: var(--primary); color: #fff; }
         .btn-next:hover { background: var(--primary-dark); transform: translateY(-1px); }
@@ -151,83 +126,81 @@
         .btn-submit { background: var(--accent); color: #fff; font-size: 1.1rem; padding: 0.85rem 3rem; }
         .btn-submit:hover { background: #00a844; }
 
-        /* SUCCESS */
         .success-message {
             display: none; text-align: center; padding: 3rem 2rem;
-            background: #fff; border-radius: var(--radius);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            background: #fff; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .success-message.show { display: block; }
         .success-icon { font-size: 4rem; margin-bottom: 1rem; }
         .success-message h2 { color: var(--accent); margin-bottom: 0.5rem; }
-
         .required::after { content: ' *'; color: #ef5350; }
+        .info-box { background: #f0f7ff; padding: 1rem; border-radius: 8px; border-left: 3px solid var(--primary); }
     </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="logo">Smart<span>Rebuild</span></a>
-    <a href="index.html" class="nav-back">← Back to Home</a>
+    <div class="nav-right">
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('pt')">PT</button>
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+        </div>
+        <a href="index.html" class="nav-back" data-i="back_home">← Back to Home</a>
+    </div>
 </nav>
 
 <div class="page-header">
-    <h1>Free Smart Home Audit</h1>
-    <p>Tell us about your property and current system — we'll create a personalized upgrade plan</p>
+    <h1 data-i="audit_title">Free Smart Home Audit</h1>
+    <p data-i="audit_sub">Tell us about your property and current system — we'll create a personalized upgrade plan</p>
 </div>
 
 <div class="form-container">
 
-    <!-- PROGRESS -->
     <div class="progress-bar" id="progressBar">
         <div class="progress-step active" data-step="1" onclick="goToStep(1)">
-            <div class="step-dot">1</div>
-            <span>Property</span>
+            <div class="step-dot">1</div><span data-i="tab_property">Property</span>
         </div>
         <div class="progress-step" data-step="2" onclick="goToStep(2)">
-            <div class="step-dot">2</div>
-            <span>System</span>
+            <div class="step-dot">2</div><span data-i="tab_system">System</span>
         </div>
         <div class="progress-step" data-step="3" onclick="goToStep(3)">
-            <div class="step-dot">3</div>
-            <span>Problems</span>
+            <div class="step-dot">3</div><span data-i="tab_problems">Problems</span>
         </div>
         <div class="progress-step" data-step="4" onclick="goToStep(4)">
-            <div class="step-dot">4</div>
-            <span>Goals</span>
+            <div class="step-dot">4</div><span data-i="tab_goals">Goals</span>
         </div>
         <div class="progress-step" data-step="5" onclick="goToStep(5)">
-            <div class="step-dot">5</div>
-            <span>Estimate</span>
+            <div class="step-dot">5</div><span data-i="tab_budget">Estimate</span>
         </div>
     </div>
 
     <form id="auditForm" onsubmit="submitForm(event)">
 
-        <!-- SECTION 1: PROPERTY DATA -->
+        <!-- SECTION 1 -->
         <div class="form-section active" data-step="1">
-            <h2>🏠 Property Information</h2>
-            <p class="section-desc">Basic details about your property so we understand the scope</p>
-
+            <h2>🏠 <span data-i="s1_title">Property Information</span></h2>
+            <p class="section-desc" data-i="s1_desc">Basic details about your property so we understand the scope</p>
             <div class="row">
                 <div class="form-group">
-                    <label class="required">Your Name</label>
-                    <input type="text" name="name" required placeholder="João Silva">
+                    <label class="required" data-i="lbl_name">Your Name</label>
+                    <input type="text" name="name" required data-ph="ph_name">
                 </div>
                 <div class="form-group">
                     <label class="required">Email</label>
-                    <input type="email" name="email" required placeholder="joao@example.com">
+                    <input type="email" name="email" required data-ph="ph_email">
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label>Phone</label>
+                    <label data-i="lbl_phone">Phone</label>
                     <input type="tel" name="phone" placeholder="+351 9XX XXX XXX">
                 </div>
                 <div class="form-group">
-                    <label class="required">City / Area</label>
+                    <label class="required" data-i="lbl_city">City / Area</label>
                     <select name="city" required>
-                        <option value="">Select area...</option>
+                        <option value="" data-i="opt_select_area">Select area...</option>
                         <option>Porto Centro</option>
                         <option>Matosinhos</option>
                         <option>Maia</option>
@@ -235,106 +208,98 @@
                         <option>Gondomar</option>
                         <option>Valongo</option>
                         <option>Espinho</option>
-                        <option>Other (Porto Metro)</option>
+                        <option value="other" data-i="opt_other_porto">Other (Porto Metro)</option>
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label class="required">Property Type</label>
+                    <label class="required" data-i="lbl_property_type">Property Type</label>
                     <select name="property_type" required>
-                        <option value="">Select type...</option>
-                        <option>Apartment (T1-T2)</option>
-                        <option>Apartment (T3+)</option>
-                        <option>Townhouse / Moradia</option>
-                        <option>Villa</option>
-                        <option>Commercial Space</option>
+                        <option value="" data-i="opt_select_type">Select type...</option>
+                        <option data-i="opt_apt_small">Apartment (T1-T2)</option>
+                        <option data-i="opt_apt_large">Apartment (T3+)</option>
+                        <option data-i="opt_townhouse">Townhouse / Moradia</option>
+                        <option data-i="opt_villa">Villa</option>
+                        <option data-i="opt_commercial">Commercial Space</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Area (m²)</label>
+                    <label data-i="lbl_area">Area (m²)</label>
                     <input type="number" name="area_m2" placeholder="120">
                 </div>
             </div>
             <div class="form-group">
-                <label>Number of Rooms to Automate</label>
+                <label data-i="lbl_rooms">Number of Rooms to Automate</label>
                 <div class="range-group">
                     <input type="range" name="rooms" min="1" max="15" value="5" oninput="this.nextElementSibling.querySelector('.val').textContent=this.value">
-                    <div class="range-labels"><span>1 room</span><span class="val">5</span><span>15+ rooms</span></div>
+                    <div class="range-labels"><span data-i="rooms_min">1 room</span><span class="val">5</span><span data-i="rooms_max">15+ rooms</span></div>
                 </div>
             </div>
             <div class="form-nav">
                 <div></div>
-                <button type="button" class="btn btn-next" onclick="nextStep()">Next: Current System →</button>
+                <button type="button" class="btn btn-next" onclick="nextStep()" data-i="btn_next_system">Next: Current System →</button>
             </div>
         </div>
 
-        <!-- SECTION 2: EXISTING SYSTEM -->
+        <!-- SECTION 2 -->
         <div class="form-section" data-step="2">
-            <h2>⚡ Existing System</h2>
-            <p class="section-desc">What smart home equipment do you currently have?</p>
+            <h2>⚡ <span data-i="s2_title">Existing System</span></h2>
+            <p class="section-desc" data-i="s2_desc">What smart home equipment do you currently have?</p>
 
             <div class="form-group">
-                <label>Current Smart Home Hub / Controller</label>
+                <label data-i="lbl_hub">Current Smart Home Hub / Controller</label>
                 <div class="radio-cards">
                     <label class="radio-card" onclick="selectRadioCard(this)">
                         <input type="radio" name="current_hub" value="none">
-                        <div class="rc-icon">❌</div>
-                        <div>No hub</div>
+                        <div class="rc-icon">❌</div><div data-i="hub_none">No hub</div>
                     </label>
                     <label class="radio-card" onclick="selectRadioCard(this)">
                         <input type="radio" name="current_hub" value="home_assistant">
-                        <div class="rc-icon">🏠</div>
-                        <div>Home Assistant</div>
+                        <div class="rc-icon">🏠</div><div>Home Assistant</div>
                     </label>
                     <label class="radio-card" onclick="selectRadioCard(this)">
                         <input type="radio" name="current_hub" value="smartthings">
-                        <div class="rc-icon">📱</div>
-                        <div>SmartThings</div>
+                        <div class="rc-icon">📱</div><div>SmartThings</div>
                     </label>
                     <label class="radio-card" onclick="selectRadioCard(this)">
                         <input type="radio" name="current_hub" value="proprietary">
-                        <div class="rc-icon">🏢</div>
-                        <div>Proprietary / KNX</div>
+                        <div class="rc-icon">🏢</div><div data-i="hub_prop">Proprietary / KNX</div>
                     </label>
                     <label class="radio-card" onclick="selectRadioCard(this)">
                         <input type="radio" name="current_hub" value="other">
-                        <div class="rc-icon">❓</div>
-                        <div>Other / Unknown</div>
+                        <div class="rc-icon">❓</div><div data-i="hub_other">Other / Unknown</div>
                     </label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>What devices / systems do you have? <span class="hint">(select all that apply)</span></label>
+                <label data-i="lbl_devices">What devices / systems do you have? <span class="hint" data-i="hint_select_all">(select all that apply)</span></label>
                 <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="lights"> 💡 Smart Lights</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="blinds"> 🪟 Blinds / Shutters</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="climate"> 🌡️ Climate / HVAC</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="cameras"> 📷 Cameras</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="locks"> 🔐 Smart Locks</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="speakers"> 🔊 Speakers / Voice</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="sensors"> 📡 Sensors</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="irrigation"> 💧 Irrigation</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="alarm"> 🚨 Alarm System</label>
-                    <label class="checkbox-item"><input type="checkbox" name="devices" value="ev_charger"> 🔋 EV Charger</label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="lights"> <span data-i="dev_lights">💡 Smart Lights</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="blinds"> <span data-i="dev_blinds">🪟 Blinds / Shutters</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="climate"> <span data-i="dev_climate">🌡️ Climate / HVAC</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="cameras"> <span data-i="dev_cameras">📷 Cameras</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="locks"> <span data-i="dev_locks">🔐 Smart Locks</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="speakers"> <span data-i="dev_speakers">🔊 Speakers / Voice</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="sensors"> <span data-i="dev_sensors">📡 Sensors</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="irrigation"> <span data-i="dev_irrigation">💧 Irrigation</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="alarm"> <span data-i="dev_alarm">🚨 Alarm System</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="devices" value="ev_charger"> <span data-i="dev_ev">🔋 EV Charger</span></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Approximate number of smart devices</label>
+                <label data-i="lbl_device_count">Approximate number of smart devices</label>
                 <select name="device_count">
-                    <option value="">Select...</option>
-                    <option>1–10</option>
-                    <option>11–30</option>
-                    <option>31–50</option>
-                    <option>50+</option>
-                    <option>Not sure</option>
+                    <option value="" data-i="opt_select">Select...</option>
+                    <option>1–10</option><option>11–30</option><option>31–50</option><option>50+</option>
+                    <option data-i="opt_not_sure">Not sure</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Protocols in use <span class="hint">(if you know)</span></label>
+                <label data-i="lbl_protocols">Protocols in use <span class="hint" data-i="hint_if_know">(if you know)</span></label>
                 <div class="checkbox-group">
                     <label class="checkbox-item"><input type="checkbox" name="protocols" value="wifi"> WiFi</label>
                     <label class="checkbox-item"><input type="checkbox" name="protocols" value="zigbee"> Zigbee</label>
@@ -343,267 +308,410 @@
                     <label class="checkbox-item"><input type="checkbox" name="protocols" value="knx"> KNX</label>
                     <label class="checkbox-item"><input type="checkbox" name="protocols" value="433mhz"> 433 MHz RF</label>
                     <label class="checkbox-item"><input type="checkbox" name="protocols" value="thread"> Thread / Matter</label>
-                    <label class="checkbox-item"><input type="checkbox" name="protocols" value="unknown"> Don't know</label>
+                    <label class="checkbox-item"><input type="checkbox" name="protocols" value="unknown"> <span data-i="proto_unknown">Don't know</span></label>
                 </div>
             </div>
 
             <div class="form-nav">
-                <button type="button" class="btn btn-prev" onclick="prevStep()">← Back</button>
-                <button type="button" class="btn btn-next" onclick="nextStep()">Next: Problems →</button>
+                <button type="button" class="btn btn-prev" onclick="prevStep()" data-i="btn_back">← Back</button>
+                <button type="button" class="btn btn-next" onclick="nextStep()" data-i="btn_next_problems">Next: Problems →</button>
             </div>
         </div>
 
-        <!-- SECTION 3: PROBLEMS -->
+        <!-- SECTION 3 -->
         <div class="form-section" data-step="3">
-            <h2>🔥 Current Problems</h2>
-            <p class="section-desc">What's not working? The more detail you give, the better our recommendations</p>
+            <h2>🔥 <span data-i="s3_title">Current Problems</span></h2>
+            <p class="section-desc" data-i="s3_desc">What's not working? The more detail you give, the better our recommendations</p>
 
             <div class="form-group">
-                <label>What are the main issues? <span class="hint">(select all that apply)</span></label>
+                <label data-i="lbl_issues">What are the main issues? <span class="hint" data-i="hint_select_all">(select all that apply)</span></label>
                 <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="unreliable"> 🐌 Slow / Unreliable</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="no_support"> 🚫 No support / installer gone</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="too_many_apps"> 📱 Too many apps</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="security"> 🔒 Security concerns</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="outdated"> ⏰ Outdated system</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="no_automation"> 🤖 No real automation</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="cloud_dependent"> ☁️ Cloud dependent</label>
-                    <label class="checkbox-item"><input type="checkbox" name="problems" value="wifi_issues"> 📶 WiFi coverage problems</label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="unreliable"> <span data-i="iss_unreliable">🐌 Slow / Unreliable</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="no_support"> <span data-i="iss_no_support">🚫 No support / installer gone</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="too_many_apps"> <span data-i="iss_apps">📱 Too many apps</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="security"> <span data-i="iss_security">🔒 Security concerns</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="outdated"> <span data-i="iss_outdated">⏰ Outdated system</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="no_automation"> <span data-i="iss_no_auto">🤖 No real automation</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="cloud_dependent"> <span data-i="iss_cloud">☁️ Cloud dependent</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="problems" value="wifi_issues"> <span data-i="iss_wifi">📶 WiFi coverage problems</span></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Frustration Level</label>
+                <label data-i="lbl_frustration">Frustration Level</label>
                 <div class="range-group">
                     <input type="range" name="frustration" min="1" max="10" value="5" oninput="this.nextElementSibling.querySelector('.val').textContent=this.value">
-                    <div class="range-labels"><span>1 — Minor annoyance</span><span class="val">5</span><span>10 — Nothing works</span></div>
+                    <div class="range-labels"><span data-i="frust_min">1 — Minor annoyance</span><span class="val">5</span><span data-i="frust_max">10 — Nothing works</span></div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Describe your biggest pain point</label>
-                <textarea name="pain_point" placeholder="For example: 'Lights take 3 seconds to turn on, automations run randomly at 3 AM, and the installer who set it up doesn't answer calls anymore...'"></textarea>
+                <label data-i="lbl_pain">Describe your biggest pain point</label>
+                <textarea name="pain_point" data-ph="ph_pain"></textarea>
             </div>
 
             <div class="form-group">
-                <label>When was the system installed?</label>
+                <label data-i="lbl_install_year">When was the system installed?</label>
                 <select name="install_year">
-                    <option value="">Select...</option>
-                    <option>2024–2026</option>
-                    <option>2022–2023</option>
-                    <option>2020–2021</option>
-                    <option>2018–2019</option>
-                    <option>Before 2018</option>
-                    <option>Don't know</option>
+                    <option value="" data-i="opt_select">Select...</option>
+                    <option>2024–2026</option><option>2022–2023</option><option>2020–2021</option><option>2018–2019</option>
+                    <option data-i="opt_before_2018">Before 2018</option>
+                    <option data-i="opt_dont_know">Don't know</option>
                 </select>
             </div>
 
             <div class="form-nav">
-                <button type="button" class="btn btn-prev" onclick="prevStep()">← Back</button>
-                <button type="button" class="btn btn-next" onclick="nextStep()">Next: Goals →</button>
+                <button type="button" class="btn btn-prev" onclick="prevStep()" data-i="btn_back">← Back</button>
+                <button type="button" class="btn btn-next" onclick="nextStep()" data-i="btn_next_goals">Next: Goals →</button>
             </div>
         </div>
 
-        <!-- SECTION 4: DESIRED SOLUTION -->
+        <!-- SECTION 4 -->
         <div class="form-section" data-step="4">
-            <h2>🎯 What You Want</h2>
-            <p class="section-desc">Your ideal smart home — help us understand your priorities</p>
+            <h2>🎯 <span data-i="s4_title">What You Want</span></h2>
+            <p class="section-desc" data-i="s4_desc">Your ideal smart home — help us understand your priorities</p>
 
             <div class="form-group">
-                <label>What matters most? <span class="hint">(select top 3)</span></label>
+                <label data-i="lbl_priorities">What matters most? <span class="hint" data-i="hint_top3">(select top 3)</span></label>
                 <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="reliability"> ✅ Reliability</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="local_control"> 🏠 Local control (no cloud)</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="voice"> 🎤 Voice control</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="energy"> ⚡ Energy savings</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="security"> 🔒 Security & cameras</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="one_app"> 📱 Single app for everything</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="ai"> 🤖 AI & smart automation</label>
-                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="simple"> 👨‍👩‍👧 Simple for family</label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="reliability"> <span data-i="pri_reliability">✅ Reliability</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="local_control"> <span data-i="pri_local">🏠 Local control (no cloud)</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="voice"> <span data-i="pri_voice">🎤 Voice control</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="energy"> <span data-i="pri_energy">⚡ Energy savings</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="security"> <span data-i="pri_security">🔒 Security & cameras</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="one_app"> <span data-i="pri_one_app">📱 Single app for everything</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="ai"> <span data-i="pri_ai">🤖 AI & smart automation</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="priorities" value="simple"> <span data-i="pri_simple">👨‍👩‍👧 Simple for family</span></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Voice assistant preference</label>
+                <label data-i="lbl_voice_pref">Voice assistant preference</label>
                 <div class="radio-cards">
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="voice_pref" value="alexa">
-                        <div class="rc-icon">🔵</div>
-                        <div>Alexa</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="voice_pref" value="google">
-                        <div class="rc-icon">🔴</div>
-                        <div>Google</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="voice_pref" value="siri">
-                        <div class="rc-icon">⚪</div>
-                        <div>Siri</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="voice_pref" value="none">
-                        <div class="rc-icon">🔇</div>
-                        <div>No voice</div>
-                    </label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="voice_pref" value="alexa"><div class="rc-icon">🔵</div><div>Alexa</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="voice_pref" value="google"><div class="rc-icon">🔴</div><div>Google</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="voice_pref" value="siri"><div class="rc-icon">⚪</div><div>Siri</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="voice_pref" value="none"><div class="rc-icon">🔇</div><div data-i="voice_none">No voice</div></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Anything else you'd like us to know?</label>
-                <textarea name="additional_notes" placeholder="Special requirements, upcoming renovations, existing wiring details, etc."></textarea>
+                <label data-i="lbl_additional">Anything else you'd like us to know?</label>
+                <textarea name="additional_notes" data-ph="ph_additional"></textarea>
             </div>
 
             <div class="form-nav">
-                <button type="button" class="btn btn-prev" onclick="prevStep()">← Back</button>
-                <button type="button" class="btn btn-next" onclick="nextStep()">Next: Budget →</button>
+                <button type="button" class="btn btn-prev" onclick="prevStep()" data-i="btn_back">← Back</button>
+                <button type="button" class="btn btn-next" onclick="nextStep()" data-i="btn_next_budget">Next: Budget →</button>
             </div>
         </div>
 
-        <!-- SECTION 5: ESTIMATE / BUDGET -->
+        <!-- SECTION 5 -->
         <div class="form-section" data-step="5">
-            <h2>💰 Budget & Timeline</h2>
-            <p class="section-desc">Help us tailor the proposal to your expectations</p>
+            <h2>💰 <span data-i="s5_title">Budget & Timeline</span></h2>
+            <p class="section-desc" data-i="s5_desc">Help us tailor the proposal to your expectations</p>
 
             <div class="form-group">
-                <label>Your budget range for the upgrade</label>
+                <label data-i="lbl_budget">Your budget range for the upgrade</label>
                 <div class="radio-cards">
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="budget" value="under1k">
-                        <div class="rc-icon">💶</div>
-                        <div>Under €1,000</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="budget" value="1k-3k">
-                        <div class="rc-icon">💶💶</div>
-                        <div>€1,000 – €3,000</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="budget" value="3k-5k">
-                        <div class="rc-icon">💶💶💶</div>
-                        <div>€3,000 – €5,000</div>
-                    </label>
-                    <label class="radio-card" onclick="selectRadioCard(this)">
-                        <input type="radio" name="budget" value="5k+">
-                        <div class="rc-icon">🏆</div>
-                        <div>€5,000+</div>
-                    </label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="budget" value="under1k"><div class="rc-icon">💶</div><div data-i="bud_1">Under €1,000</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="budget" value="1k-3k"><div class="rc-icon">💶💶</div><div>€1,000 – €3,000</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="budget" value="3k-5k"><div class="rc-icon">💶💶💶</div><div>€3,000 – €5,000</div></label>
+                    <label class="radio-card" onclick="selectRadioCard(this)"><input type="radio" name="budget" value="5k+"><div class="rc-icon">🏆</div><div>€5,000+</div></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>When do you want to start?</label>
+                <label data-i="lbl_timeline">When do you want to start?</label>
                 <select name="timeline">
-                    <option value="">Select...</option>
-                    <option>As soon as possible</option>
-                    <option>Within 1 month</option>
-                    <option>Within 3 months</option>
-                    <option>Just exploring options</option>
+                    <option value="" data-i="opt_select">Select...</option>
+                    <option data-i="time_asap">As soon as possible</option>
+                    <option data-i="time_1m">Within 1 month</option>
+                    <option data-i="time_3m">Within 3 months</option>
+                    <option data-i="time_explore">Just exploring options</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Preferred contact method</label>
+                <label data-i="lbl_contact_method">Preferred contact method</label>
                 <select name="contact_method">
-                    <option value="">Select...</option>
+                    <option value="" data-i="opt_select">Select...</option>
                     <option>Email</option>
-                    <option>Phone call</option>
+                    <option data-i="contact_phone">Phone call</option>
                     <option>WhatsApp</option>
-                    <option>On-site visit</option>
+                    <option data-i="contact_visit">On-site visit</option>
                 </select>
             </div>
 
-            <div class="form-group" style="background: #f0f7ff; padding: 1rem; border-radius: 8px; border-left: 3px solid var(--primary);">
-                <p style="font-size: 0.95rem;"><strong>What happens next?</strong></p>
-                <p style="font-size: 0.9rem; color: var(--text-light);">We'll review your audit within 24 hours and send you a personalized upgrade plan with options and pricing. No obligation, no pressure.</p>
+            <div class="info-box">
+                <p style="font-size:0.95rem;"><strong data-i="info_title">What happens next?</strong></p>
+                <p style="font-size:0.9rem; color:var(--text-light);" data-i="info_desc">We'll review your audit within 24 hours and send you a personalized upgrade plan with options and pricing. No obligation, no pressure.</p>
             </div>
 
             <div class="form-nav">
-                <button type="button" class="btn btn-prev" onclick="prevStep()">← Back</button>
-                <button type="submit" class="btn btn-submit">Submit Audit Request ✓</button>
+                <button type="button" class="btn btn-prev" onclick="prevStep()" data-i="btn_back">← Back</button>
+                <button type="submit" class="btn btn-submit" data-i="btn_submit">Submit Audit Request ✓</button>
             </div>
         </div>
 
     </form>
 
-    <!-- SUCCESS -->
     <div class="success-message" id="successMessage">
         <div class="success-icon">✅</div>
-        <h2>Audit Request Received!</h2>
-        <p style="font-size: 1.1rem; margin-bottom: 1rem;">Thank you! We'll review your information and get back to you within 24 hours with a personalized upgrade plan.</p>
-        <p style="color: var(--text-light);">Check your email for a confirmation.</p>
-        <a href="index.html" class="btn btn-next" style="display:inline-block; margin-top: 1.5rem; text-decoration: none;">← Back to Homepage</a>
+        <h2 data-i="success_title">Audit Request Received!</h2>
+        <p style="font-size:1.1rem; margin-bottom:1rem;" data-i="success_text">Thank you! We'll review your information and get back to you within 24 hours with a personalized upgrade plan.</p>
+        <p style="color:var(--text-light);" data-i="success_email">Check your email for a confirmation.</p>
+        <a href="index.html" class="btn btn-next" style="display:inline-block; margin-top:1.5rem; text-decoration:none;" data-i="success_back">← Back to Homepage</a>
     </div>
 
 </div>
 
 <script>
-    let currentStep = 1;
-    const totalSteps = 5;
+const T = {
+en: {
+    back_home: "← Back to Home",
+    audit_title: "Free Smart Home Audit", audit_sub: "Tell us about your property and current system — we'll create a personalized upgrade plan",
+    tab_property: "Property", tab_system: "System", tab_problems: "Problems", tab_goals: "Goals", tab_budget: "Estimate",
+    s1_title: "Property Information", s1_desc: "Basic details about your property so we understand the scope",
+    lbl_name: "Your Name", ph_name: "João Silva", ph_email: "joao@example.com",
+    lbl_phone: "Phone", lbl_city: "City / Area",
+    opt_select_area: "Select area...", opt_other_porto: "Other (Porto Metro)",
+    lbl_property_type: "Property Type", opt_select_type: "Select type...",
+    opt_apt_small: "Apartment (T1-T2)", opt_apt_large: "Apartment (T3+)",
+    opt_townhouse: "Townhouse / Moradia", opt_villa: "Villa", opt_commercial: "Commercial Space",
+    lbl_area: "Area (m²)", lbl_rooms: "Number of Rooms to Automate",
+    rooms_min: "1 room", rooms_max: "15+ rooms",
+    btn_next_system: "Next: Current System →",
+    s2_title: "Existing System", s2_desc: "What smart home equipment do you currently have?",
+    lbl_hub: "Current Smart Home Hub / Controller",
+    hub_none: "No hub", hub_prop: "Proprietary / KNX", hub_other: "Other / Unknown",
+    lbl_devices: "What devices / systems do you have?", hint_select_all: "(select all that apply)",
+    dev_lights: "💡 Smart Lights", dev_blinds: "🪟 Blinds / Shutters", dev_climate: "🌡️ Climate / HVAC",
+    dev_cameras: "📷 Cameras", dev_locks: "🔐 Smart Locks", dev_speakers: "🔊 Speakers / Voice",
+    dev_sensors: "📡 Sensors", dev_irrigation: "💧 Irrigation", dev_alarm: "🚨 Alarm System", dev_ev: "🔋 EV Charger",
+    lbl_device_count: "Approximate number of smart devices", opt_select: "Select...", opt_not_sure: "Not sure",
+    lbl_protocols: "Protocols in use", hint_if_know: "(if you know)", proto_unknown: "Don't know",
+    btn_back: "← Back", btn_next_problems: "Next: Problems →",
+    s3_title: "Current Problems", s3_desc: "What's not working? The more detail you give, the better our recommendations",
+    lbl_issues: "What are the main issues?",
+    iss_unreliable: "🐌 Slow / Unreliable", iss_no_support: "🚫 No support / installer gone",
+    iss_apps: "📱 Too many apps", iss_security: "🔒 Security concerns",
+    iss_outdated: "⏰ Outdated system", iss_no_auto: "🤖 No real automation",
+    iss_cloud: "☁️ Cloud dependent", iss_wifi: "📶 WiFi coverage problems",
+    lbl_frustration: "Frustration Level",
+    frust_min: "1 — Minor annoyance", frust_max: "10 — Nothing works",
+    lbl_pain: "Describe your biggest pain point",
+    ph_pain: "For example: 'Lights take 3 seconds to turn on, automations run randomly at 3 AM...'",
+    lbl_install_year: "When was the system installed?",
+    opt_before_2018: "Before 2018", opt_dont_know: "Don't know",
+    btn_next_goals: "Next: Goals →",
+    s4_title: "What You Want", s4_desc: "Your ideal smart home — help us understand your priorities",
+    lbl_priorities: "What matters most?", hint_top3: "(select top 3)",
+    pri_reliability: "✅ Reliability", pri_local: "🏠 Local control (no cloud)",
+    pri_voice: "🎤 Voice control", pri_energy: "⚡ Energy savings",
+    pri_security: "🔒 Security & cameras", pri_one_app: "📱 Single app for everything",
+    pri_ai: "🤖 AI & smart automation", pri_simple: "👨‍👩‍👧 Simple for family",
+    lbl_voice_pref: "Voice assistant preference", voice_none: "No voice",
+    lbl_additional: "Anything else you'd like us to know?",
+    ph_additional: "Special requirements, upcoming renovations, existing wiring details, etc.",
+    btn_next_budget: "Next: Budget →",
+    s5_title: "Budget & Timeline", s5_desc: "Help us tailor the proposal to your expectations",
+    lbl_budget: "Your budget range for the upgrade",
+    bud_1: "Under €1,000",
+    lbl_timeline: "When do you want to start?",
+    time_asap: "As soon as possible", time_1m: "Within 1 month", time_3m: "Within 3 months", time_explore: "Just exploring options",
+    lbl_contact_method: "Preferred contact method",
+    contact_phone: "Phone call", contact_visit: "On-site visit",
+    info_title: "What happens next?",
+    info_desc: "We'll review your audit within 24 hours and send you a personalized upgrade plan with options and pricing. No obligation, no pressure.",
+    btn_submit: "Submit Audit Request ✓",
+    success_title: "Audit Request Received!",
+    success_text: "Thank you! We'll review your information and get back to you within 24 hours with a personalized upgrade plan.",
+    success_email: "Check your email for a confirmation.",
+    success_back: "← Back to Homepage"
+},
+pt: {
+    back_home: "← Voltar ao Início",
+    audit_title: "Auditoria Grátis de Casa Inteligente", audit_sub: "Conte-nos sobre a sua propriedade e sistema atual — criaremos um plano de upgrade personalizado",
+    tab_property: "Imóvel", tab_system: "Sistema", tab_problems: "Problemas", tab_goals: "Objetivos", tab_budget: "Orçamento",
+    s1_title: "Dados do Imóvel", s1_desc: "Informações básicas sobre a sua propriedade para entendermos o âmbito",
+    lbl_name: "O seu Nome", ph_name: "João Silva", ph_email: "joao@exemplo.com",
+    lbl_phone: "Telefone", lbl_city: "Cidade / Área",
+    opt_select_area: "Selecione a área...", opt_other_porto: "Outra (Área Metro Porto)",
+    lbl_property_type: "Tipo de Imóvel", opt_select_type: "Selecione o tipo...",
+    opt_apt_small: "Apartamento (T1-T2)", opt_apt_large: "Apartamento (T3+)",
+    opt_townhouse: "Moradia / Townhouse", opt_villa: "Vivenda", opt_commercial: "Espaço Comercial",
+    lbl_area: "Área (m²)", lbl_rooms: "Número de Divisões a Automatizar",
+    rooms_min: "1 divisão", rooms_max: "15+ divisões",
+    btn_next_system: "Seguinte: Sistema Atual →",
+    s2_title: "Sistema Existente", s2_desc: "Que equipamentos de casa inteligente tem atualmente?",
+    lbl_hub: "Hub / Controlador Atual",
+    hub_none: "Sem hub", hub_prop: "Proprietário / KNX", hub_other: "Outro / Desconhecido",
+    lbl_devices: "Que dispositivos / sistemas tem?", hint_select_all: "(selecione todos os aplicáveis)",
+    dev_lights: "💡 Iluminação Inteligente", dev_blinds: "🪟 Estores / Persianas", dev_climate: "🌡️ Climatização / AVAC",
+    dev_cameras: "📷 Câmaras", dev_locks: "🔐 Fechaduras Inteligentes", dev_speakers: "🔊 Colunas / Voz",
+    dev_sensors: "📡 Sensores", dev_irrigation: "💧 Rega", dev_alarm: "🚨 Sistema de Alarme", dev_ev: "🔋 Carregador VE",
+    lbl_device_count: "Número aproximado de dispositivos", opt_select: "Selecione...", opt_not_sure: "Não tenho a certeza",
+    lbl_protocols: "Protocolos em uso", hint_if_know: "(se souber)", proto_unknown: "Não sei",
+    btn_back: "← Voltar", btn_next_problems: "Seguinte: Problemas →",
+    s3_title: "Problemas Atuais", s3_desc: "O que não funciona? Quanto mais detalhe der, melhores as nossas recomendações",
+    lbl_issues: "Quais são os principais problemas?",
+    iss_unreliable: "🐌 Lento / Instável", iss_no_support: "🚫 Sem suporte / instalador desapareceu",
+    iss_apps: "📱 Demasiadas apps", iss_security: "🔒 Preocupações de segurança",
+    iss_outdated: "⏰ Sistema desatualizado", iss_no_auto: "🤖 Sem automação real",
+    iss_cloud: "☁️ Dependente da cloud", iss_wifi: "📶 Problemas de cobertura WiFi",
+    lbl_frustration: "Nível de Frustração",
+    frust_min: "1 — Pequeno incómodo", frust_max: "10 — Nada funciona",
+    lbl_pain: "Descreva o seu maior problema",
+    ph_pain: "Por exemplo: 'As luzes demoram 3 segundos a ligar, automações disparam às 3 da manhã...'",
+    lbl_install_year: "Quando foi o sistema instalado?",
+    opt_before_2018: "Antes de 2018", opt_dont_know: "Não sei",
+    btn_next_goals: "Seguinte: Objetivos →",
+    s4_title: "O Que Pretende", s4_desc: "A sua casa inteligente ideal — ajude-nos a entender as suas prioridades",
+    lbl_priorities: "O que é mais importante?", hint_top3: "(selecione os 3 principais)",
+    pri_reliability: "✅ Fiabilidade", pri_local: "🏠 Controlo local (sem cloud)",
+    pri_voice: "🎤 Controlo por voz", pri_energy: "⚡ Poupança de energia",
+    pri_security: "🔒 Segurança & câmaras", pri_one_app: "📱 Uma app para tudo",
+    pri_ai: "🤖 AI & automação inteligente", pri_simple: "👨‍👩‍👧 Simples para a família",
+    lbl_voice_pref: "Preferência de assistente de voz", voice_none: "Sem voz",
+    lbl_additional: "Mais alguma coisa que queira partilhar?",
+    ph_additional: "Requisitos especiais, renovações planeadas, detalhes da cablagem existente, etc.",
+    btn_next_budget: "Seguinte: Orçamento →",
+    s5_title: "Orçamento & Prazo", s5_desc: "Ajude-nos a adaptar a proposta às suas expectativas",
+    lbl_budget: "A sua faixa de orçamento para o upgrade",
+    bud_1: "Até €1.000",
+    lbl_timeline: "Quando quer começar?",
+    time_asap: "O mais rápido possível", time_1m: "Dentro de 1 mês", time_3m: "Dentro de 3 meses", time_explore: "Só a explorar opções",
+    lbl_contact_method: "Método de contacto preferido",
+    contact_phone: "Chamada telefónica", contact_visit: "Visita ao local",
+    info_title: "O que acontece a seguir?",
+    info_desc: "Vamos analisar a sua auditoria em 24 horas e enviar-lhe um plano de upgrade personalizado com opções e preços. Sem compromisso, sem pressão.",
+    btn_submit: "Enviar Pedido de Auditoria ✓",
+    success_title: "Pedido de Auditoria Recebido!",
+    success_text: "Obrigado! Vamos analisar as suas informações e contactá-lo dentro de 24 horas com um plano de upgrade personalizado.",
+    success_email: "Verifique o seu email para confirmação.",
+    success_back: "← Voltar à Página Inicial"
+},
+ru: {
+    back_home: "← На главную",
+    audit_title: "Бесплатный аудит Умного Дома", audit_sub: "Расскажите о вашем объекте и текущей системе — мы создадим персональный план модернизации",
+    tab_property: "Объект", tab_system: "Система", tab_problems: "Проблемы", tab_goals: "Цели", tab_budget: "Бюджет",
+    s1_title: "Данные объекта", s1_desc: "Базовая информация о вашем объекте для понимания масштаба работ",
+    lbl_name: "Ваше имя", ph_name: "Иван Петров", ph_email: "ivan@example.com",
+    lbl_phone: "Телефон", lbl_city: "Город / Район",
+    opt_select_area: "Выберите район...", opt_other_porto: "Другой (район Порту)",
+    lbl_property_type: "Тип объекта", opt_select_type: "Выберите тип...",
+    opt_apt_small: "Квартира (1-2 комнаты)", opt_apt_large: "Квартира (3+ комнаты)",
+    opt_townhouse: "Таунхаус / Moradia", opt_villa: "Вилла", opt_commercial: "Коммерческое помещение",
+    lbl_area: "Площадь (м²)", lbl_rooms: "Количество комнат для автоматизации",
+    rooms_min: "1 комната", rooms_max: "15+ комнат",
+    btn_next_system: "Далее: Текущая система →",
+    s2_title: "Существующая система", s2_desc: "Какое оборудование умного дома у вас есть?",
+    lbl_hub: "Текущий хаб / контроллер умного дома",
+    hub_none: "Нет хаба", hub_prop: "Проприетарный / KNX", hub_other: "Другой / Неизвестно",
+    lbl_devices: "Какие устройства / системы у вас есть?", hint_select_all: "(выберите все подходящие)",
+    dev_lights: "💡 Умный свет", dev_blinds: "🪟 Жалюзи / Шторы", dev_climate: "🌡️ Климат / HVAC",
+    dev_cameras: "📷 Камеры", dev_locks: "🔐 Умные замки", dev_speakers: "🔊 Колонки / Голос",
+    dev_sensors: "📡 Датчики", dev_irrigation: "💧 Полив", dev_alarm: "🚨 Сигнализация", dev_ev: "🔋 Зарядка EV",
+    lbl_device_count: "Примерное количество умных устройств", opt_select: "Выберите...", opt_not_sure: "Не уверен",
+    lbl_protocols: "Используемые протоколы", hint_if_know: "(если знаете)", proto_unknown: "Не знаю",
+    btn_back: "← Назад", btn_next_problems: "Далее: Проблемы →",
+    s3_title: "Текущие проблемы", s3_desc: "Что не работает? Чем больше деталей, тем лучше наши рекомендации",
+    lbl_issues: "Какие основные проблемы?",
+    iss_unreliable: "🐌 Медленно / Ненадёжно", iss_no_support: "🚫 Нет поддержки / установщик пропал",
+    iss_apps: "📱 Слишком много приложений", iss_security: "🔒 Проблемы безопасности",
+    iss_outdated: "⏰ Устаревшая система", iss_no_auto: "🤖 Нет реальной автоматизации",
+    iss_cloud: "☁️ Зависимость от облака", iss_wifi: "📶 Проблемы покрытия WiFi",
+    lbl_frustration: "Уровень раздражения",
+    frust_min: "1 — Мелкое неудобство", frust_max: "10 — Ничего не работает",
+    lbl_pain: "Опишите главную проблему",
+    ph_pain: "Например: 'Свет включается 3 секунды, автоматизации срабатывают в 3 часа ночи...'",
+    lbl_install_year: "Когда была установлена система?",
+    opt_before_2018: "До 2018", opt_dont_know: "Не знаю",
+    btn_next_goals: "Далее: Цели →",
+    s4_title: "Что вы хотите", s4_desc: "Ваш идеальный умный дом — помогите нам понять ваши приоритеты",
+    lbl_priorities: "Что важнее всего?", hint_top3: "(выберите топ 3)",
+    pri_reliability: "✅ Надёжность", pri_local: "🏠 Локальное управление (без облака)",
+    pri_voice: "🎤 Голосовое управление", pri_energy: "⚡ Экономия энергии",
+    pri_security: "🔒 Безопасность и камеры", pri_one_app: "📱 Одно приложение для всего",
+    pri_ai: "🤖 AI и умная автоматизация", pri_simple: "👨‍👩‍👧 Просто для семьи",
+    lbl_voice_pref: "Предпочтение голосового ассистента", voice_none: "Без голоса",
+    lbl_additional: "Что-нибудь ещё хотите сообщить?",
+    ph_additional: "Особые требования, планируемый ремонт, детали проводки и т.д.",
+    btn_next_budget: "Далее: Бюджет →",
+    s5_title: "Бюджет и сроки", s5_desc: "Помогите нам подготовить предложение под ваши ожидания",
+    lbl_budget: "Ваш бюджет на модернизацию",
+    bud_1: "До €1 000",
+    lbl_timeline: "Когда хотите начать?",
+    time_asap: "Как можно скорее", time_1m: "В течение 1 месяца", time_3m: "В течение 3 месяцев", time_explore: "Просто изучаю варианты",
+    lbl_contact_method: "Предпочтительный способ связи",
+    contact_phone: "Телефонный звонок", contact_visit: "Визит на объект",
+    info_title: "Что дальше?",
+    info_desc: "Мы рассмотрим вашу заявку в течение 24 часов и пришлём персональный план модернизации с вариантами и ценами. Без обязательств, без давления.",
+    btn_submit: "Отправить заявку на аудит ✓",
+    success_title: "Заявка на аудит получена!",
+    success_text: "Спасибо! Мы рассмотрим вашу информацию и свяжемся с вами в течение 24 часов с персональным планом модернизации.",
+    success_email: "Проверьте email — мы отправили подтверждение.",
+    success_back: "← На главную"
+}
+};
 
-    function updateProgress() {
-        document.querySelectorAll('.progress-step').forEach(el => {
-            const step = parseInt(el.dataset.step);
-            el.classList.remove('active', 'done');
-            if (step === currentStep) el.classList.add('active');
-            else if (step < currentStep) el.classList.add('done');
-        });
-        document.querySelectorAll('.form-section').forEach(el => {
-            el.classList.remove('active');
-            if (parseInt(el.dataset.step) === currentStep) el.classList.add('active');
-        });
-    }
+let currentStep = 1;
+const totalSteps = 5;
 
-    function nextStep() {
-        if (currentStep < totalSteps) {
-            currentStep++;
-            updateProgress();
-            window.scrollTo({ top: 200, behavior: 'smooth' });
-        }
-    }
+function updateProgress() {
+    document.querySelectorAll('.progress-step').forEach(el => {
+        const s = parseInt(el.dataset.step);
+        el.classList.remove('active', 'done');
+        if (s === currentStep) el.classList.add('active');
+        else if (s < currentStep) el.classList.add('done');
+    });
+    document.querySelectorAll('.form-section').forEach(el => {
+        el.classList.toggle('active', parseInt(el.dataset.step) === currentStep);
+    });
+}
+function nextStep() { if (currentStep < totalSteps) { currentStep++; updateProgress(); window.scrollTo({top:200,behavior:'smooth'}); } }
+function prevStep() { if (currentStep > 1) { currentStep--; updateProgress(); window.scrollTo({top:200,behavior:'smooth'}); } }
+function goToStep(s) { if (s >= 1 && s <= totalSteps) { currentStep = s; updateProgress(); } }
+function selectRadioCard(el) {
+    el.closest('.radio-cards').querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected'); el.querySelector('input').checked = true;
+}
+function submitForm(e) {
+    e.preventDefault();
+    console.log('Audit submission:', Object.fromEntries(new FormData(e.target)));
+    document.getElementById('auditForm').style.display = 'none';
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById('successMessage').classList.add('show');
+    window.scrollTo({top:0,behavior:'smooth'});
+}
 
-    function prevStep() {
-        if (currentStep > 1) {
-            currentStep--;
-            updateProgress();
-            window.scrollTo({ top: 200, behavior: 'smooth' });
-        }
-    }
+function detectLang() {
+    const saved = localStorage.getItem('sr_lang');
+    if (saved && T[saved]) return saved;
+    const bl = (navigator.language || '').toLowerCase();
+    if (bl.startsWith('pt')) return 'pt';
+    if (bl.startsWith('ru') || bl.startsWith('uk') || bl.startsWith('be')) return 'ru';
+    return 'en';
+}
 
-    function goToStep(step) {
-        if (step >= 1 && step <= totalSteps) {
-            currentStep = step;
-            updateProgress();
-        }
-    }
+function setLang(lang) {
+    if (!T[lang]) return;
+    localStorage.setItem('sr_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang));
+    const t = T[lang];
+    document.querySelectorAll('[data-i]').forEach(el => {
+        const k = el.getAttribute('data-i');
+        if (t[k] !== undefined) el.innerHTML = t[k];
+    });
+    document.querySelectorAll('[data-ph]').forEach(el => {
+        const k = el.getAttribute('data-ph');
+        if (t[k] !== undefined) el.placeholder = t[k];
+    });
+    document.documentElement.lang = lang;
+}
 
-    function selectRadioCard(el) {
-        const group = el.closest('.radio-cards');
-        group.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-        el.querySelector('input').checked = true;
-    }
-
-    function submitForm(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = {};
-        formData.forEach((value, key) => {
-            if (data[key]) {
-                if (Array.isArray(data[key])) data[key].push(value);
-                else data[key] = [data[key], value];
-            } else {
-                data[key] = value;
-            }
-        });
-        console.log('Audit submission:', data);
-
-        document.getElementById('auditForm').style.display = 'none';
-        document.getElementById('progressBar').style.display = 'none';
-        document.getElementById('successMessage').classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+setLang(detectLang());
 </script>
-
 </body>
 </html>
