@@ -174,7 +174,10 @@
 </div>
 
 <script>
-const API = 'http://81.17.140.198:8891';
+// Auto-detect: if served from VPS (port 8891), use relative paths; otherwise use direct IP
+const API = (location.port === '8891' || location.hostname === '81.17.140.198')
+    ? ''
+    : 'http://81.17.140.198:8891';
 let TOKEN = '';
 let allAudits = [];
 let currentFilter = 'all';
