@@ -3,7 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Smart Home Audit — SmartRebuild</title>
+    <meta name="description" content="Get a free smart home audit from SmartRebuild. Tell us about your property and current system — we create a personalized upgrade plan. Service across Europe.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://smartrebuild.org/audit.html">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smartrebuild.org/audit.html">
+    <meta property="og:title" content="Free Smart Home Audit — SmartRebuild">
+    <meta property="og:description" content="Fill out a 5-minute form and get a personalized smart home upgrade plan. Free, no obligation.">
+    <meta property="og:image" content="https://smartrebuild.org/og-image.png">
+    <meta property="og:site_name" content="SmartRebuild">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Smart Home Audit — SmartRebuild">
+    <meta name="twitter:description" content="Fill out a 5-minute form and get a personalized smart home upgrade plan.">
+    <title>Free Smart Home Audit — SmartRebuild | Europe</title>
     <style>
         :root {
             --primary: #1a73e8; --primary-dark: #1557b0; --accent: #00c853;
@@ -696,7 +711,7 @@ async function submitForm(e) {
     data.lang = localStorage.getItem('sr_lang') || 'en';
 
     try {
-        const res = await fetch('http://81.17.140.198:8891/api/audit', {
+        const res = await fetch('/api/audit', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
